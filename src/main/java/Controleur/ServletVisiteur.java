@@ -7,12 +7,13 @@ package Controleur;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
+import Modele.*;
 /**
  *
  * @author pedago
@@ -41,7 +42,22 @@ public class ServletVisiteur extends HttpServlet {
             out.println("</head>");
             out.println("<body>");
             try {
-            
+            out.println("<form action=\"ServletVisiteur\" id=\"categorie\">");
+                out.println("<select name=\"categorie\" form=\"categorie\">");
+                DAO dao = new DAO(DataSourceFactory.getDataSource());
+                List <String> categorie = dao.listeDeCategorie();
+                    if (categorie == null) {
+                        throw new Exception("Categorie inconnu");
+                    }
+
+                for(int i = 0; i<categorie.size(); i++){
+                    out.printf("<option value=\""+ categorie.get(i) +"\"> "+ categorie.get(i) + "</option>");
+                }
+
+                out.println(" </select>");
+                out.println( "<input type=\"submit\">");
+                out.println(" </form>");
+
         }catch (Exception e) {
             out.printf("Erreur : %s", e.getMessage());
 	}

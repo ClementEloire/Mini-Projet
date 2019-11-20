@@ -34,22 +34,18 @@ public class DAO {
         
         
         
-        public List<Categorie> listeDeCategorie() throws Exception {
-		List<Categorie> result = new LinkedList<>(); // Liste vIde
+        public List<String> listeDeCategorie() throws Exception {
+		List<String> result = new LinkedList<>(); // Liste vIde
 
-		String sql = "SELECT * FROM Categorie";
+		String sql = "SELECT LIBELLE FROM Categorie";
 		try (Connection connection = myDataSource.getConnection();
 			PreparedStatement stmt = connection.prepareStatement(sql)) {
 			try (ResultSet rs = stmt.executeQuery()) {
 				while (rs.next()) { // Tant qu'il y a des enregistrements
 					// On récupère les champs nécessaires de l'enregistrement courant
-					int code = rs.getInt("CODE");
 					String libelle = rs.getString("LIBELLE");
-					String description = rs.getString("DESCRIPTION");
-					// On crée l'objet entité
-					Categorie c = new Categorie(code, libelle, description);
 					// On l'ajoute à la liste des résultats
-					result.add(c);
+					result.add(libelle);
 				}
 			}
 		}  catch (SQLException ex) {
@@ -60,4 +56,5 @@ public class DAO {
 		return result;
 
 	}
+        
 }
