@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.mycompany.miniprojets;
+package Controleur;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -40,10 +40,17 @@ public class ServletVisiteur extends HttpServlet {
             out.println("<title>Servlet ServletVisiteur</title>");            
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet ServletVisiteur at " + request.getContextPath() + "</h1>");
+            try {
+            
+        }catch (Exception e) {
+            out.printf("Erreur : %s", e.getMessage());
+	}
+        
             out.println("</body>");
             out.println("</html>");
         }
+        
+        
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
