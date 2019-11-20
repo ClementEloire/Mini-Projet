@@ -19,7 +19,7 @@ public class Client {
     private String region;
     private String code_postal;
     private String pays;
-    private Strint tel;
+    private String tel;
     private String fax;
     
     public Client(String code, String societe, String contact, String fonction, String adresse, String ville, String region, String code_postal, String pays, String tel, String fax) {
