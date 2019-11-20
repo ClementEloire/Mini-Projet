@@ -57,4 +57,41 @@ public class DAO {
 
 	}
         
+        /**
+         * Récupération du client qui vient de s'authentifier
+         * @param login champ Contact de la table Client
+         * @param mdp champ Code de la table Client
+         * @return toutes les informations du Client qui vient de se login
+         * @throws Exception 
+         */
+        public Client loginClient(String login, String mdp) throws Exception {
+            Client client = null;
+            String sql = "SELECT * FROM Client Where Code = ? AND Contact = ?";
+            try (Connection connection = myDataSource.getConnection();
+			PreparedStatement stmt = connection.prepareStatement(sql)) {
+                stmt.setString(1, mdp);
+                stmt.setString(2, login);
+                try(ResultSet rs = stmt.executeQuery()) {
+                    rs.next();
+                    String code = rs.getString("Code");
+                    String societe = rs.getString("Societe");
+                    String contact = rs.getString("Contact");
+                    String fonction = rs.getString("Fonction");
+                    String adresse = rs.getString("Adresse");
+                    String ville = rs.getString("Ville");
+                    String region = rs.getString("Region");
+                    String code_postal = rs.getString("Code_postal");
+                    String pays = rs.getString("Pays");
+                    String tel = rs.getString("Telephone");
+                    String fax = rs.getString("Fax");
+                    
+                    client = new Client(code, societe, contact, fonction, adresse, ville, region, code_postal, pays, tel, fax);
+                }
+            } catch (SQLException ex) {
+                Logger.getLogger("DAO").log(Level.SEVERE, null, ex);
+                throw new Exception(ex.getMessage());
+            }
+            return client;
+           
+        } 
 }
