@@ -34,7 +34,7 @@ public class DAO {
         
         
         
-        public List<String> listeDeCategorie() throws Exception {
+        public List<String> listeDeCategorie() throws SQLException {
 		List<String> result = new LinkedList<>(); // Liste vIde
 
 		String sql = "SELECT LIBELLE FROM Categorie";
@@ -50,7 +50,7 @@ public class DAO {
 			}
 		}  catch (SQLException ex) {
 			Logger.getLogger("DAO").log(Level.SEVERE, null, ex);
-			throw new Exception(ex.getMessage());
+			throw new SQLException(ex.getMessage());
 		}
 
 		return result;

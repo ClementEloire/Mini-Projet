@@ -24,9 +24,9 @@ public class DataSourceFactory {
             }
         }
     
-    	public static DataSource getDataSource() throws SQLException {
+    	public static DataSource getDataSource() {
 		org.apache.derby.jdbc.ClientDataSource ds = new org.apache.derby.jdbc.ClientDataSource();
-		ds.setDatabaseName("Projet");
+		ds.setDatabaseName("Projets");
 		ds.setUser("clement");
 		ds.setPassword("Projet");
 		// The host on which Network Server is running
