@@ -12,6 +12,11 @@
         <title>Login page</title>
     </head>
     <body>
-        <h1>Hello World!</h1>
+        <div style="color:red">${errorMessage}</div>
+        <form action="login.jsp" method="POST">
+            login : <input name='loginParam'><br>
+            password: <input name='passwordParam' type='password'><br>
+            <input type='submit' name='action' value='login'>
+        </form>
     </body>
 </html>
