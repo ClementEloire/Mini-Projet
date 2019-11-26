@@ -12,6 +12,12 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import Modele.Client;
+import Modele.DAO;
+import Modele.DataSourceFactory;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.servlet.http.HttpSession;
 
 /**
  *
@@ -30,20 +36,25 @@ public class ServletLogin extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
-        try (PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet ServletLogin</title>");            
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>Servlet ServletLogin at " + request.getContextPath() + "</h1>");
-            out.println("</body>");
-            out.println("</html>");
+            throws ServletException, IOException, Exception {
+        String action = request.getParameter("action");
+        if(null != action) {
+            switch(action) {
+                case "login":
+                    Client client = checkLogin(request, request.getParameter("loginParam"), request.getParameter("passwordParam"));
+                    break;
+                default:
+            }
         }
+        
+        String userName = findUserInSession(request);
+        String jspView;
+        if(userName == null) {
+            jspView = "login.jsp";
+        } else {
+            jspView = "index.html";
+        }
+        request.getRequestDispatcher(jspView).forward(request, response);
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -58,7 +69,11 @@ public class ServletLogin extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        try {
+            processRequest(request, response);
+        } catch (Exception ex) {
+            Logger.getLogger(ServletLogin.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     /**
@@ -72,7 +87,11 @@ public class ServletLogin extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        try {
+            processRequest(request, response);
+        } catch (Exception ex) {
+            Logger.getLogger(ServletLogin.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     /**
@@ -84,5 +103,20 @@ public class ServletLogin extends HttpServlet {
     public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
+
+    private String findUserInSession(HttpServletRequest request) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+    
+    private void checkLogin(HttpServletRequest request, String login, String password) throws Exception {
+        DAO dao = new DAO(DataSourceFactory.getDataSource());
+        Client client = dao.loginClient(login, password);
+        if(client != null) {
+            //HttpSession session = request.getSession(true);
+            // TODO faire setAttribute pour créer la session
+        } else {
+            // TODO message d'erreur
+        }
+    }
 
 }
