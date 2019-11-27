@@ -1,10 +1,5 @@
-<%-- 
-    Document   : login
-    Created on : 26 nov. 2019, 14:23:05
-    Author     : pedago
---%>
-
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@page contentType="text/html" pageEncoding="UTF-8" session="false" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
 <html>
     <head>
@@ -13,7 +8,7 @@
     </head>
     <body>
         <div style="color:red">${errorMessage}</div>
-        <form action="login.jsp" method="POST">
+        <form action="<c:url value="/" />" method="POST">
             login : <input name='loginParam'><br>
             password: <input name='passwordParam' type='password'><br>
             <input type='submit' name='action' value='login'>
