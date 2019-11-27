@@ -50,9 +50,9 @@ public class ServletLogin extends HttpServlet {
         String userName = findUserInSession(request);
         String jspView;
         if(userName == null) {
-            jspView = "login.jsp";
-        } else {
             jspView = "index.html";
+        } else {
+            jspView = "login.jsp";
         }
         request.getRequestDispatcher(jspView).forward(request, response);
     }
@@ -108,15 +108,17 @@ public class ServletLogin extends HttpServlet {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     
-    private void checkLogin(HttpServletRequest request, String login, String password) throws Exception {
+    private Client checkLogin(HttpServletRequest request, String login, String password) throws Exception {
         DAO dao = new DAO(DataSourceFactory.getDataSource());
         Client client = dao.loginClient(login, password);
         if(client != null) {
-            //HttpSession session = request.getSession(true);
-            // TODO faire setAttribute pour créer la session
+            HttpSession session = request.getSession(true);
+            session.setAttribute("userName", client.getContact());
         } else {
-            // TODO message d'erreur
+            request.setAttribute("errorMessage", "Login/Password incorrect");
         }
+        
+        return client;
     }
 
 }
