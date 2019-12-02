@@ -35,36 +35,14 @@ public class ServletVisiteur extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet ServletVisiteur</title>");            
-            out.println("</head>");
-            out.println("<body>");
             try {
-            out.println("<form action=\"ServletVisiteur\" id=\"categorie\">");
-                out.println("<select name=\"categorie\" form=\"categorie\">");
                 DAO dao = new DAO(DataSourceFactory.getDataSource());
-                List <String> categorie = dao.listeDeCategorie();
-                    if (categorie == null) {
-                        throw new Exception("Categorie inconnu");
-                    }
-
-                for(int i = 0; i<categorie.size(); i++){
-                    out.printf("<option value=\""+ categorie.get(i) +"\"> "+ categorie.get(i) + "</option>");
-                }
-
-                out.println(" </select>");
-                out.println( "<input type=\"submit\">");
-                out.println(" </form>");
-
-        }catch (Exception e) {
-            out.printf("Erreur : %s", e.getMessage());
-	}
-        
-            out.println("</body>");
-            out.println("</html>");
+                request.setAttribute("categorie", dao.listeDeCategorie());
+            }catch (Exception e) {
+                request.setAttribute("message", e.getMessage());
+            }
         }
+        request.getRequestDispatcher("Visiteur.jsp").forward(request, response);
         
         
     }

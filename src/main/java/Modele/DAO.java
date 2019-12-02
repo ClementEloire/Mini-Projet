@@ -57,6 +57,38 @@ public class DAO {
 
 	}
         
+        
+        public List<Produit> listeDeProduit(String categorie) throws SQLException{
+            List<Produit> result = new LinkedList<>();
+            
+            String sql = "SELECT * FROM Produit Where Categorie = ?";
+            try (Connection connection = myDataSource.getConnection();
+                    PreparedStatement stmt = connection.prepareStatement(sql)) {
+                    try (ResultSet rs = stmt.executeQuery()) {
+                        while (rs.next()) { // Tant qu'il y a des enregistrements
+					// On récupère les champs nécessaires de l'enregistrement courant
+					int ref = rs.getInt("REFERENCE");
+                                        String nom = rs.getString("NOM");
+                                        int fournisseur = rs.getInt("FOURNISSEUR");
+                                        String quantitéParUnite = rs.getString("QUANTITE_PAR_UNITE");
+                                        float prixUnitaire = rs.getFloat("PRIX_UNITAIRE");
+                                        int uniteEnStock = rs.getInt("UNITES_EN_STOCK");
+                                        int uniteCommander = rs.getInt("UNITES_COMMANDEES");
+                                        int niveauDeReappro = rs.getInt("NIVEAU_DE_REAPPROVI");
+                                        int indispo = rs.getInt("INDISPONIBLE");
+					// On l'ajoute à la liste des résultats
+                                        Produit p = new Produit(ref,nom, fournisseur,quantitéParUnite,prixUnitaire, uniteEnStock,uniteCommander,niveauDeReappro,indispo);
+					result.add(p);
+                        }
+                    }
+            }catch (SQLException ex) {
+			Logger.getLogger("DAO").log(Level.SEVERE, null, ex);
+			throw new SQLException(ex.getMessage());
+		}
+            return result;
+        }
+        
+        
         /**
          * Récupération du client qui vient de s'authentifier
          * @param login champ Contact de la table Client
