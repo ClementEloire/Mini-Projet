@@ -32,7 +32,6 @@ public class ServletVisiteur extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
             try {
@@ -41,6 +40,8 @@ public class ServletVisiteur extends HttpServlet {
             }catch (Exception e) {
                 request.setAttribute("message", e.getMessage());
             }
+        }finally {
+
         }
         request.getRequestDispatcher("Visiteur.jsp").forward(request, response);
         
