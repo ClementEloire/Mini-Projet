@@ -8,7 +8,6 @@
     </head>
     <body>
         <div style="color:red">${errorMessage}</div>
-        <!--<form action="<c:url value="/" />" method="POST">-->
         <form action="login" method="POST">
             login : <input name='loginParam'><br>
             password: <input name='passwordParam' type='password'><br>

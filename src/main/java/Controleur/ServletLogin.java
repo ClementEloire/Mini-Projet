@@ -42,24 +42,20 @@ public class ServletLogin extends HttpServlet {
         if(null != action) {
             switch(action) {
                 case "login":
-                    Client client = checkLogin(request, request.getParameter("loginParam"), request.getParameter("passwordParam"));
-                    /*if(!request.getParameter("loginParam").equals("admin") && !request.getParameter("passwordParam").equals("mdp")) {
-                        request.setAttribute("errorMessage", "Login/Password incorrect");
-                    } else {
-                        request.setAttribute("errorMessage", "Connecté !");
-                    }*/
+                    checkLogin(request, request.getParameter("loginParam"), request.getParameter("passwordParam"));
                     break;
-                default:
+                case "logout":
+                    doLogout(request);
+                    break;
             }
         }
-        request.getRequestDispatcher("login.jsp").forward(request, response);
         
         String userName = findUserInSession(request);
         String jspView;
         if(userName == null) {
             jspView = "login.jsp";
         } else {
-            jspView = "index.html";
+            jspView = "produitClient.jsp";
         }
         request.getRequestDispatcher(jspView).forward(request, response);
         
@@ -111,7 +107,8 @@ public class ServletLogin extends HttpServlet {
     }// </editor-fold>
 
     private String findUserInSession(HttpServletRequest request) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        HttpSession session = request.getSession(false);
+        return (session == null) ? null : (String) session.getAttribute("userName");
     }
     
     private Client checkLogin(HttpServletRequest request, String login, String password) throws Exception {
@@ -119,13 +116,20 @@ public class ServletLogin extends HttpServlet {
         Client client = dao.loginClient(login, password);
         if(client != null) {
             HttpSession session = request.getSession(true);
-            session.setAttribute("userName", client.getContact());
+            session.setAttribute("userName", client.getCode());
             request.setAttribute("errorMessage","Trouvé !");
         } else {
             request.setAttribute("errorMessage", "Login/Password incorrect");
         }
         
         return client;
+    }
+    
+    private void doLogout(HttpServletRequest request) {
+        HttpSession session = request.getSession(false);
+        if(session != null) {
+            session.invalidate();
+        }
     }
 
 }
