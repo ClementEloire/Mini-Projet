@@ -11,6 +11,9 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>JSP Page</title>
     </head>
+    <form action="login" method="POST">
+        <input type='submit' name='action' value='logout'>
+    </form>
     <body>
         <h1>Hello World!</h1>
     </body>
