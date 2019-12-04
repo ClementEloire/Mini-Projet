@@ -42,9 +42,11 @@ public class ServletLogin extends HttpServlet {
         if(null != action) {
             switch(action) {
                 case "login":
-                    Client client = checkLogin(request, request.getParameter("loginParam"), request.getParameter("passwordParam"));
+                    checkLogin(request, request.getParameter("loginParam"), request.getParameter("passwordParam"));
                     break;
-                default:
+                case "logout":
+                    doLogout(request);
+                    break;
             }
         }
         
@@ -53,7 +55,7 @@ public class ServletLogin extends HttpServlet {
         if(userName == null) {
             jspView = "login.jsp";
         } else {
-            jspView = "Visiteur.jsp";
+            jspView = "produitClient.jsp";
         }
         request.getRequestDispatcher(jspView).forward(request, response);
         
@@ -121,6 +123,13 @@ public class ServletLogin extends HttpServlet {
         }
         
         return client;
+    }
+    
+    private void doLogout(HttpServletRequest request) {
+        HttpSession session = request.getSession(false);
+        if(session != null) {
+            session.invalidate();
+        }
     }
 
 }
