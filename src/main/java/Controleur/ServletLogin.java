@@ -52,14 +52,13 @@ public class ServletLogin extends HttpServlet {
                 default:
             }
         }
-        request.getRequestDispatcher("login.jsp").forward(request, response);
         
         String userName = findUserInSession(request);
         String jspView;
         if(userName == null) {
             jspView = "login.jsp";
         } else {
-            jspView = "index.html";
+            jspView = "Visiteur.jsp";
         }
         request.getRequestDispatcher(jspView).forward(request, response);
         
@@ -111,7 +110,8 @@ public class ServletLogin extends HttpServlet {
     }// </editor-fold>
 
     private String findUserInSession(HttpServletRequest request) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        HttpSession session = request.getSession(false);
+        return (session == null) ? null : (String) session.getAttribute("userName");
     }
     
     private Client checkLogin(HttpServletRequest request, String login, String password) throws Exception {
