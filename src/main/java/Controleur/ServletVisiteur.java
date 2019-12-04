@@ -6,7 +6,6 @@
 package Controleur;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -14,6 +13,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import Modele.*;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 /**
  *
  * @author pedago
@@ -31,20 +33,19 @@ public class ServletVisiteur extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        try (PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
-            try {
-                DAO dao = new DAO(DataSourceFactory.getDataSource());
-                request.setAttribute("categorie", dao.listeDeCategorie());
-            }catch (Exception e) {
-                request.setAttribute("message", e.getMessage());
-            }
-        }finally {
-
-        }
-        request.getRequestDispatcher("Visiteur.jsp").forward(request, response);
+            throws ServletException, IOException, SQLException {  
         
+        
+        DAO dao = new DAO(DataSourceFactory.getDataSource());
+        String cat =  request.getParameter("Categorie");
+        if(cat == null)
+        {
+            cat= String.valueOf(dao.listeDeCategorie().get(0).getCode());
+        } 
+        List<Produit> listeProduit =dao.listeDeProduit(Integer.valueOf(cat)) ;
+        request.setAttribute("Categories", dao.listeDeCategorie());
+        request.setAttribute("Produits" , listeProduit);
+        request.getRequestDispatcher("Visiteur.jsp").forward(request, response);
         
     }
 
@@ -60,7 +61,12 @@ public class ServletVisiteur extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        try {
+            processRequest(request, response);
+        }catch (SQLException ex) {
+            String s = ex.getMessage();
+            Logger.getLogger(ServletVisiteur.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     /**
@@ -74,7 +80,11 @@ public class ServletVisiteur extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        try {
+            processRequest(request, response);
+        }catch (SQLException ex) {
+            Logger.getLogger(ServletVisiteur.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     /**

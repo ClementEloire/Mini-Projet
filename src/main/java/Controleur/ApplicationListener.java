@@ -9,6 +9,7 @@ package Controleur;
  *
  * @author pedago
  */
+import Modele.Categorie;
 import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
 import java.sql.Connection;
@@ -46,7 +47,7 @@ public class ApplicationListener implements ServletContextListener {
 
 		DAO dao = new DAO(DataSourceFactory.getDataSource());
 		try {
-			List<String> allCategorie = dao.listeDeCategorie();
+			List<Categorie> allCategorie = dao.listeDeCategorie();
 			Logger.getLogger("Projets").log(Level.INFO, "Database already exists");
 			result = true;
 		} catch (SQLException ex) {

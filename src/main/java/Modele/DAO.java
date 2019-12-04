@@ -34,18 +34,21 @@ public class DAO {
         
         
         
-        public List<String> listeDeCategorie() throws SQLException {
-		List<String> result = new LinkedList<>(); // Liste vIde
+        public List<Categorie> listeDeCategorie() throws SQLException {
+		List<Categorie> result = new LinkedList<>(); // Liste vIde
 
-		String sql = "SELECT LIBELLE FROM Categorie";
+		String sql = "SELECT * FROM Categorie";
 		try (Connection connection = myDataSource.getConnection();
 			PreparedStatement stmt = connection.prepareStatement(sql)) {
 			try (ResultSet rs = stmt.executeQuery()) {
 				while (rs.next()) { // Tant qu'il y a des enregistrements
 					// On récupère les champs nécessaires de l'enregistrement courant
 					String libelle = rs.getString("LIBELLE");
+                                        int code = rs.getInt("CODE");
+                                        String desc = rs.getString("DESCRIPTION");
 					// On l'ajoute à la liste des résultats
-					result.add(libelle);
+                                        Categorie c = new Categorie(code,libelle,desc);
+					result.add(c);
 				}
 			}
 		}  catch (SQLException ex) {
@@ -58,14 +61,16 @@ public class DAO {
 	}
         
         
-        public List<Produit> listeDeProduit(String categorie) throws SQLException{
+        public List<Produit> listeDeProduit(int categorie) throws SQLException{
             List<Produit> result = new LinkedList<>();
             
-            String sql = "SELECT * FROM Produit Where Categorie = ?";
+            
+            String sql = "SELECT * FROM Produit Where categorie = ?";
             try (Connection connection = myDataSource.getConnection();
                     PreparedStatement stmt = connection.prepareStatement(sql)) {
+                stmt.setInt(1, categorie);
                     try (ResultSet rs = stmt.executeQuery()) {
-                        while (rs.next()) { // Tant qu'il y a des enregistrements
+                        if (rs.next()) { // Tant qu'il y a des enregistrements
 					// On récupère les champs nécessaires de l'enregistrement courant
 					int ref = rs.getInt("REFERENCE");
                                         String nom = rs.getString("NOM");
