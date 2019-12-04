@@ -119,7 +119,7 @@ public class ServletLogin extends HttpServlet {
         Client client = dao.loginClient(login, password);
         if(client != null) {
             HttpSession session = request.getSession(true);
-            session.setAttribute("userName", client.getContact());
+            session.setAttribute("userName", client.getCode());
             request.setAttribute("errorMessage","Trouvé !");
         } else {
             request.setAttribute("errorMessage", "Login/Password incorrect");
