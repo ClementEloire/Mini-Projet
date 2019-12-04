@@ -43,11 +43,6 @@ public class ServletLogin extends HttpServlet {
             switch(action) {
                 case "login":
                     Client client = checkLogin(request, request.getParameter("loginParam"), request.getParameter("passwordParam"));
-                    /*if(!request.getParameter("loginParam").equals("admin") && !request.getParameter("passwordParam").equals("mdp")) {
-                        request.setAttribute("errorMessage", "Login/Password incorrect");
-                    } else {
-                        request.setAttribute("errorMessage", "Connecté !");
-                    }*/
                     break;
                 default:
             }
