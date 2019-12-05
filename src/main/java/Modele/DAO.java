@@ -70,7 +70,7 @@ public class DAO {
                     PreparedStatement stmt = connection.prepareStatement(sql)) {
                 stmt.setInt(1, categorie);
                     try (ResultSet rs = stmt.executeQuery()) {
-                        if (rs.next()) { // Tant qu'il y a des enregistrements
+                        while (rs.next()) { // Tant qu'il y a des enregistrements
 					// On récupère les champs nécessaires de l'enregistrement courant
 					int ref = rs.getInt("REFERENCE");
                                         String nom = rs.getString("NOM");
@@ -79,7 +79,7 @@ public class DAO {
                                         float prixUnitaire = rs.getFloat("PRIX_UNITAIRE");
                                         int uniteEnStock = rs.getInt("UNITES_EN_STOCK");
                                         int uniteCommander = rs.getInt("UNITES_COMMANDEES");
-                                        int niveauDeReappro = rs.getInt("NIVEAU_DE_REAPPROVI");
+                                        int niveauDeReappro = rs.getInt("NIVEAU_DE_REAPPRO");
                                         int indispo = rs.getInt("INDISPONIBLE");
 					// On l'ajoute à la liste des résultats
                                         Produit p = new Produit(ref,nom, fournisseur,quantitéParUnite,prixUnitaire, uniteEnStock,uniteCommander,niveauDeReappro,indispo);
