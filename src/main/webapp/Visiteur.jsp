@@ -65,6 +65,7 @@
                             <td>${u.getFournisseur()}</td>
                         </tr>
             </c:forEach>
-    </table>    
+    </table>   
+    <a href="/Mini-Projet/login">Log In</a>
     </body>
 </html>
