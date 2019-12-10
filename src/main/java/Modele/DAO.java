@@ -101,8 +101,8 @@ public class DAO {
          * @return toutes les informations du Client qui vient de se login, si aucun client n'est trouver alors renvoie null
          * @throws Exception 
          */
-        public Client loginClient(String login, String mdp) throws Exception {
-            Client client = null;
+        public boolean loginClient(String login, String mdp) throws Exception {
+            boolean log = false;
             String sql = "SELECT * FROM Client Where Code = ? AND Contact = ?";
             try (Connection connection = myDataSource.getConnection();
 			PreparedStatement stmt = connection.prepareStatement(sql)) {
@@ -110,21 +110,7 @@ public class DAO {
                 stmt.setString(2, login);
                 try(ResultSet rs = stmt.executeQuery()) {
                     if(rs.next()) {
-                        String code = rs.getString("Code");
-                        String societe = rs.getString("Societe");
-                        String contact = rs.getString("Contact");
-                        String fonction = rs.getString("Fonction");
-                        String adresse = rs.getString("Adresse");
-                        String ville = rs.getString("Ville");
-                        String region = rs.getString("Region");
-                        String code_postal = rs.getString("Code_postal");
-                        String pays = rs.getString("Pays");
-                        String tel = rs.getString("Telephone");
-                        String fax = rs.getString("Fax");
-
-                        client = new Client(code, societe, contact, fonction, adresse, ville, region, code_postal, pays, tel, fax);
-                    } else {
-                        client = null;
+                        log = true;
                     }
                     
                 }
@@ -132,7 +118,7 @@ public class DAO {
                 Logger.getLogger("DAO").log(Level.SEVERE, null, ex);
                 throw new Exception(ex.getMessage());
             }
-            return client;
+            return log;
            
         } 
         
