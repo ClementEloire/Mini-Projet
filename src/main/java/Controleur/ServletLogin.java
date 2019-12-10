@@ -55,7 +55,7 @@ public class ServletLogin extends HttpServlet {
         if(userName == null) {
             jspView = "login.jsp";
         } else {
-            jspView = "produitClient.jsp";
+            jspView = "ServletClient";
         }
         request.getRequestDispatcher(jspView).forward(request, response);
         
