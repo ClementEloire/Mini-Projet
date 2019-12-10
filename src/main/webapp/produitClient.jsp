@@ -65,6 +65,8 @@
                             <td>${u.getFournisseur()}</td>
                         </tr>
             </c:forEach>
-    </table>    
+    </table>
+        
+        <a href="<c:url value="protect/infoClient.jsp"/>">Info Client</a>
     </body>
 </html>

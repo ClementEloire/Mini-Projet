@@ -21,4 +21,13 @@
     <welcome-file-list>
         <welcome-file>Visiteur.jsp</welcome-file>
     </welcome-file-list>
+    <filter>
+        <filter-name>ProtectFilter</filter-name>
+        <filter-class>Controleur.ProtectFilter</filter-class>
+       
+    </filter>
+    <filter-mapping>
+        <filter-name>ProtectFilter</filter-name>
+        <url-pattern>/protect/*</url-pattern>
+    </filter-mapping>
 </web-app>
