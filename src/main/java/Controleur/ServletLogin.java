@@ -59,7 +59,7 @@ public class ServletLogin extends HttpServlet {
         } if(identifiant.equals("admin") && password.equals("admin")) {
             jspView = "ServletAdmin";
         }else {
-            jspView = "ServletClient";
+            jspView = "ServletVisiteur";
         }
         request.getRequestDispatcher(jspView).forward(request, response);
         
@@ -115,18 +115,16 @@ public class ServletLogin extends HttpServlet {
         return (session == null) ? null : (String) session.getAttribute("userName");
     }
     
-    private Client checkLogin(HttpServletRequest request, String login, String password) throws Exception {
+    private void checkLogin(HttpServletRequest request, String login, String password) throws Exception {
         DAO dao = new DAO(DataSourceFactory.getDataSource());
-        Client client = dao.loginClient(login, password);
-        if(client != null) {
+        boolean log = dao.loginClient(login, password);
+        if(log == true) {
             HttpSession session = request.getSession(true);
-            session.setAttribute("userName", client.getCode());
+            session.setAttribute("userName", password);
             request.setAttribute("errorMessage","Trouvé !");
         } else {
             request.setAttribute("errorMessage", "Login/Password incorrect");
         }
-        
-        return client;
     }
     
     private void doLogout(HttpServletRequest request) {
