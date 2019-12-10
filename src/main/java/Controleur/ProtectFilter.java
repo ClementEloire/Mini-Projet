@@ -32,7 +32,16 @@ public class ProtectFilter implements Filter  {
 
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
-        
+        try {
+            HttpSession session = ((HttpServletRequest) request).getSession(false);
+            if (session != null && session.getAttribute("userName") != null) {			
+		chain.doFilter(request, response);
+            } else {
+                // On redirige vers la page visiteur
+		((HttpServletResponse) response).sendRedirect(((HttpServletRequest) request).getContextPath() + "/");
+            }
+        } catch (IOException | ServletException t) {
+	}
     }
 
     @Override
