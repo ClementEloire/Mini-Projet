@@ -37,7 +37,7 @@ public class ProtectFilter implements Filter  {
             if (session != null && session.getAttribute("userName") != null) {			
 		chain.doFilter(request, response);
             } else {
-                // On redirige vers la page visiteur
+                // On redirige vers la page visiteur    
 		((HttpServletResponse) response).sendRedirect(((HttpServletRequest) request).getContextPath() + "/");
             }
         } catch (IOException | ServletException t) {
