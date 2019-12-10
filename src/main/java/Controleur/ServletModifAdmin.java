@@ -1,31 +1,31 @@
-    /*
+/*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
 package Controleur;
 
+import Modele.DAO;
+import Modele.DataSourceFactory;
+import Modele.Produit;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.SQLException;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import Modele.Client;
-import Modele.DAO;
-import Modele.DataSourceFactory;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.servlet.http.HttpSession;
-
 
 /**
  *
- * @author pedago
+ * @author Clément Eloire
  */
-@WebServlet(name = "ServletLogin", urlPatterns = {"/ServletLogin"})
-public class ServletLogin extends HttpServlet {
+@WebServlet(name = "ServletModifAdmin", urlPatterns = {"/ServletModifAdmin"})
+public class ServletModifAdmin extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -37,32 +37,36 @@ public class ServletLogin extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException, Exception {
+            throws ServletException, IOException, SQLException{
+        
+        DAO dao = new DAO(DataSourceFactory.getDataSource());
+        String cat =  request.getParameter("Categorie");
+        if(cat == null)
+        {
+            cat= String.valueOf(dao.listeDeCategorie().get(0).getCode());
+        } 
+        List<Produit> listeProduit =dao.listeDeProduit(Integer.valueOf(cat)) ;
+        request.setAttribute("Categories", dao.listeDeCategorie());
+        request.setAttribute("Produits" , listeProduit);
+        request.getRequestDispatcher("modifAdmin.jsp").forward(request, response);
+        
+        
         String action = request.getParameter("action");
-        String identifiant = request.getParameter("loginParam");
-        String password = request.getParameter("passwordParam");
         if(null != action) {
             switch(action) {
-                case "login":
-                    checkLogin(request, identifiant,password );
+                case "X":
+                    dao.deleteProduit(0);
+                    request.getRequestDispatcher("modifAdmin.jsp").forward(request, response);
                     break;
-                case "logout":
-                    doLogout(request);
+                case "Modifier":
                     break;
+                case "Ajouter":
+                    
+                    break;
+                default:
+                    
             }
         }
-        
-        String userName = findUserInSession(request);
-        String jspView;
-        if(userName == null) {
-            jspView = "login.jsp";
-        } if(identifiant.equals("admin") && password.equals("admin")) {
-            jspView = "ServletAdmin";
-        }else {
-            jspView = "produitClient.jsp";
-        }
-        request.getRequestDispatcher(jspView).forward(request, response);
-        
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -77,7 +81,11 @@ public class ServletLogin extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        request.getRequestDispatcher("login.jsp").forward(request, response);
+        try {
+            processRequest(request, response);
+        }catch (SQLException ex) {
+            Logger.getLogger(ServletVisiteur.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     /**
@@ -92,11 +100,9 @@ public class ServletLogin extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         try {
-            
-            
             processRequest(request, response);
-        } catch (Exception ex) {
-            Logger.getLogger(ServletLogin.class.getName()).log(Level.SEVERE, null, ex);
+        }catch (SQLException ex) {
+            Logger.getLogger(ServletVisiteur.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
@@ -109,31 +115,5 @@ public class ServletLogin extends HttpServlet {
     public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
-
-    private String findUserInSession(HttpServletRequest request) {
-        HttpSession session = request.getSession(false);
-        return (session == null) ? null : (String) session.getAttribute("userName");
-    }
-    
-    private Client checkLogin(HttpServletRequest request, String login, String password) throws Exception {
-        DAO dao = new DAO(DataSourceFactory.getDataSource());
-        Client client = dao.loginClient(login, password);
-        if(client != null) {
-            HttpSession session = request.getSession(true);
-            session.setAttribute("userName", client.getCode());
-            request.setAttribute("errorMessage","Trouvé !");
-        } else {
-            request.setAttribute("errorMessage", "Login/Password incorrect");
-        }
-        
-        return client;
-    }
-    
-    private void doLogout(HttpServletRequest request) {
-        HttpSession session = request.getSession(false);
-        if(session != null) {
-            session.invalidate();
-        }
-    }
 
 }

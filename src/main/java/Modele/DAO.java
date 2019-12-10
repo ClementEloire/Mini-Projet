@@ -135,4 +135,15 @@ public class DAO {
             return client;
            
         } 
+        
+        public int deleteProduit(int code) throws SQLException {
+		int result = 0;
+		String sql = "DELETE FROM PRODUIT WHERE Reference = ?";
+		try (Connection connection = myDataSource.getConnection(); 
+		     PreparedStatement stmt = connection.prepareStatement(sql)) {
+			stmt.setInt(1, code);
+			result = stmt.executeUpdate();
+		}
+		return result;
+	}
 }

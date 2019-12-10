@@ -45,8 +45,8 @@
         <form action="login" method="POST">
             <input type='submit' name='action' value='logout'>
         </form>
-        <form>
-            <select name='CategorieClient' onchange='this.form.submit()'>
+        <form action="ServletClient.java" method="POST">
+            <select  name='CategorieClient' onchange='this.form.submit()'>
                 <c:forEach var="CategorieClient" items="${CategoriesClient}">
                     <option value='${CategorieClient.getCode()}'
                             selected
@@ -55,7 +55,7 @@
             </select>
         </form>
             <table border=2>
-                 <tr> <th>Références</th> <th>Nom</th> <th>Fournisseur</th> </tr>
+                 <tr> <th>Références</th> <th>Nom</th> <th>Fournisseur</th></tr>
                  <tbody>
 
                     <c:forEach items="${ProduitsClient}" var="u">
