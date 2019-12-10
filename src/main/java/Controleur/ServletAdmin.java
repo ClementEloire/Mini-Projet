@@ -34,6 +34,8 @@ public class ServletAdmin extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException,SQLException {
+        
+        request.getRequestDispatcher("graphAdmin.jsp").forward(request, response);
        
         }
     
