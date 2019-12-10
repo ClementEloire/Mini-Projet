@@ -65,8 +65,10 @@
                             <td>${u.getFournisseur()}</td>
                         </tr>
             </c:forEach>
-    </table>
+            </table>
+        <form action="ServletInfoClient" method="POST">    
+            <input type='submit' value='Info Client'>
+        </form>
         
-        <a href="<c:url value="protect/infoClient.jsp"/>">Info Client</a>
     </body>
 </html>
