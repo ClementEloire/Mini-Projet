@@ -59,7 +59,7 @@ public class ServletLogin extends HttpServlet {
         } if(identifiant.equals("admin") && password.equals("admin")) {
             jspView = "ServletAdmin";
         }else {
-            jspView = "ServletVisiteur";
+            jspView = "ServletClient";
         }
         request.getRequestDispatcher(jspView).forward(request, response);
         
