@@ -67,7 +67,7 @@
             </c:forEach>
             </table>
         <form action="ServletInfoClient" method="POST">    
-            <input type='submit' value='Info Client'>
+            <input type='submit' name="action" value='Info Client'>
         </form>
         
     </body>
