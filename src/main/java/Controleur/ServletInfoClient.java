@@ -49,7 +49,11 @@ public class ServletInfoClient extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        request.getRequestDispatcher("protect/infoClient.jsp").forward(request, response);
+        try {
+            processRequest(request, response);
+        } catch (Exception ex) {
+            Logger.getLogger(ServletInfoClient.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     /**
