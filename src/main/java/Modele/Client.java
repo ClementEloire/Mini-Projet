@@ -65,7 +65,11 @@ public class Client {
     }
     
     public String getCodePostal() {
-        return this.code_postal;
+        String codePostal = this.code_postal;
+        for(int i = 0 ; i < 10-codePostal.length() ; i++) {
+            codePostal += " ";
+        }
+        return codePostal;
     }
     
     public String getPays() {
