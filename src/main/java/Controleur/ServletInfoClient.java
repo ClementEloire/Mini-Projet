@@ -34,8 +34,6 @@ public class ServletInfoClient extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException, Exception {
-        DAO dao = new DAO(DataSourceFactory.getDataSource());
-        Client client = dao.infoClient((String) request.getAttribute("userName"));
         request.getRequestDispatcher("protect/infoClient.jsp").forward(request, response);
     }
 
@@ -51,11 +49,7 @@ public class ServletInfoClient extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        try {
-            processRequest(request, response);
-        } catch (Exception ex) {
-            Logger.getLogger(ServletInfoClient.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        request.getRequestDispatcher("protect/infoClient.jsp").forward(request, response);
     }
 
     /**
