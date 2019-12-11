@@ -56,7 +56,7 @@ public class ServletLogin extends HttpServlet {
         String jspView;
         if(userName == null) {
             jspView = "login.jsp";
-        } if(identifiant.equals("admin") && password.equals("admin")) {
+        } else if(identifiant.equals("admin") && password.equals("admin")) {
             jspView = "ServletAdmin";
         }else {
             jspView = "ServletClient";
@@ -117,11 +117,9 @@ public class ServletLogin extends HttpServlet {
     
     private void checkLogin(HttpServletRequest request, String login, String password) throws Exception {
         DAO dao = new DAO(DataSourceFactory.getDataSource());
-        boolean log = dao.loginClient(login, password);
-        if(log == true) {
+        if(dao.loginClient(login, password)) {
             HttpSession session = request.getSession(true);
             session.setAttribute("userName", password);
-            request.setAttribute("errorMessage","Trouvé !");
         } else {
             request.setAttribute("errorMessage", "Login/Password incorrect");
         }
