@@ -50,12 +50,12 @@ public class ServletModifAdmin extends HttpServlet {
         request.setAttribute("Produits" , listeProduit);
         request.getRequestDispatcher("modifAdmin.jsp").forward(request, response);
         
-        
+        String idRef = request.getParameter("idProduit");
         String action = request.getParameter("action");
         if(null != action) {
             switch(action) {
                 case "X":
-                    dao.deleteProduit(0);
+                    dao.deleteProduit(Integer.valueOf(idRef));
                     request.getRequestDispatcher("modifAdmin.jsp").forward(request, response);
                     break;
                 case "Modifier":

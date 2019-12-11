@@ -72,7 +72,8 @@
 
                     <c:forEach items="${Produits}" var="u">
                         <tr>
-                            <td>${u.getReference()}</td>
+                    <form method='GET'>
+                            <td><input type="text" name="idProduit" value=${u.getReference()} /></td>
                             <td>${u.getNom()}</td>
                             <td>${u.getFournisseur()}</td>
                             <td>${u.getQuantiteParUnite()}</td>
@@ -83,8 +84,9 @@
                             <td>${u.getIndisponible()}</td>
                             <td><input type="submit" name="action" value="X" ></td>
                             <td><input type="submit" name="action" value="Modifier"/></td>
+                    </form>
                         </tr>
-            </c:forEach>
+                    </c:forEach>
     </table> 
     <input type="submit" name="action" value="Ajouter"/>
     </body>
