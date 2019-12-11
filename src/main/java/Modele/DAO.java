@@ -174,9 +174,37 @@ public class DAO {
         /**
          * Modifie toutes les informations d'un client
          * @param client toutes les informations du client à update
+         * @return le nombre d'enregistrement changer
+         * @throws Exception 
          */
-        public void uptadeClient(Client client) {
+        public int updateClient(Client client) throws Exception {
+            int upd = 0;
             String sql = "UPDATE Client "
-                    + "SET Societe = ?, Contact = ?, ";
+                    + "SET Societe = ?, Contact = ?, Fonction = ?, Adresse = ?, "
+                    + "Ville = ?, Region = ?, Code_postal = ?, Pays = ?, "
+                    + "Telephone = ?, Fax = ?"
+                    + "WHERE Code = ?";
+            
+             try (Connection connection = myDataSource.getConnection();
+			PreparedStatement stmt = connection.prepareStatement(sql)) {
+                 stmt.setString(1, client.getSociete());
+                 stmt.setString(2, client.getContact());
+                 stmt.setString(3, client.getFonction());
+                 stmt.setString(4, client.getAdresse());
+                 stmt.setString(5, client.getVille());
+                 stmt.setString(6, client.getRegion());
+                 stmt.setString(7, client.getCodePostal());
+                 stmt.setString(8, client.getPays());
+                 stmt.setString(9, client.getTel());
+                 stmt.setString(10, client.getFax());
+                 stmt.setString(11, client.getCode());
+                 
+                upd = stmt.executeUpdate();
+             } catch (SQLException ex) {
+                Logger.getLogger("DAO").log(Level.SEVERE, null, ex);
+                throw new Exception(ex.getMessage());
+            }
+            
+             return upd;
         }
 }
