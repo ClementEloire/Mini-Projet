@@ -26,5 +26,9 @@
             Fax : <input name="Fax" value="${sessionScope.Client.fax}"/></br>
             <input name="action" value="update" type="submit"/>
         </form>
+            
+         <form method="GET" action="ServletClient">
+             <input type="submit" name="action" value="Page produit"/>
+         </form>
     </body>
 </html>
