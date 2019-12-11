@@ -120,6 +120,8 @@ public class ServletLogin extends HttpServlet {
         if(dao.loginClient(login, password)) {
             HttpSession session = request.getSession(true);
             session.setAttribute("userName", password);
+            Client client = dao.infoClient(password);
+            request.getSession(true).setAttribute("Client", client);
         } else {
             request.setAttribute("errorMessage", "Login/Password incorrect");
         }
