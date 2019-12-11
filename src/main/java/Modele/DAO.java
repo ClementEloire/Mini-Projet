@@ -95,10 +95,10 @@ public class DAO {
         
         
         /**
-         * Récupération du client qui vient de s'authentifier
+         * On regarde si les paramètres passer existent dans la table client
          * @param login champ Contact de la table Client
          * @param mdp champ Code de la table Client
-         * @return toutes les informations du Client qui vient de se login, si aucun client n'est trouver alors renvoie null
+         * @return TRUE si existant, FALSE sinon
          * @throws Exception 
          */
         public boolean loginClient(String login, String mdp) throws Exception {
@@ -133,6 +133,12 @@ public class DAO {
 		return result;
 	}
         
+        /**
+         * Récupère toutes les informations du client
+         * @param code code du client
+         * @return toutes les informations du client sous la forme d'un objet Client
+         * @throws Exception 
+         */
         public Client infoClient (String code) throws Exception {
             Client client = null;
             String sql = "SELECT * FROM Client Where Code = ?";
@@ -163,5 +169,14 @@ public class DAO {
                 throw new Exception(ex.getMessage());
             }
             return client;
+        }
+        
+        /**
+         * Modifie toutes les informations d'un client
+         * @param client toutes les informations du client à update
+         */
+        public void uptadeClient(Client client) {
+            String sql = "UPDATE Client "
+                    + "SET Societe = ?, Contact = ?, ";
         }
 }
