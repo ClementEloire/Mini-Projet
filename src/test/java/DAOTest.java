@@ -59,7 +59,7 @@ public class DAOTest {
     
     @Test
     public void testUpdateClient() throws Exception {
-         Client client = new Client( "RICAR", "Ricardo Adocicados", "Janete Limeira", "Représentant(e)", "Av. Copacabana, 267", "Rio de Janeiro", null, "12209     ", "Allemagne", "030-0074321", "030-0076545");
+         Client client = new Client( "RICAR",  "Alexis Company", "Maria Anders", "Représentant(e)", "Obere Str. 57", "Frankfurt", null, "12209     ", "Allemagne", "030-0074321", "030-0076545");
          dao.updateClient(client);
          client = dao.infoClient("RICAR");
          System.out.println(client.getAdresse());// TEST VISUEL
