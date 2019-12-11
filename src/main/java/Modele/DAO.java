@@ -179,4 +179,25 @@ public class DAO {
             String sql = "UPDATE Client "
                     + "SET Societe = ?, Contact = ?, ";
         }
+        
+        public int updateProduit (Produit produit) throws SQLException{
+            int result = 0;
+		String sql = "UPDATE PRODUIT SET NOM = ? , FOURNISSEUR = ? ,"
+                        + "Quantite_par_unite = ? , Prix_unitaire = ?, Unites_en_Stock = ?,"
+                        + "Unites_Commandees =? , Niveau_de_reappro =? , Indisponible = ? WHERE Reference = ?";
+		try (Connection connection = myDataSource.getConnection(); 
+		     PreparedStatement stmt = connection.prepareStatement(sql)) {
+			stmt.setString(1, produit.getNom());
+                        stmt.setInt(2,produit.getFournisseur());
+                        stmt.setString(3,produit.getQuantiteParUnite());
+                        stmt.setFloat(4,produit.getprixUnitaire());
+                        stmt.setInt(5,produit.getUniteEnStock());
+                        stmt.setInt(6,produit.getUniteCommande());
+                        stmt.setInt(7,produit.getNiveauDeReaprovi());
+                        stmt.setInt(8,produit.getIndisponible());
+                        stmt.setInt(9,produit.getReference());
+			result = stmt.executeUpdate();
+		}
+		return result;
+        }
 }

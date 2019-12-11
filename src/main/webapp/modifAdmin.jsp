@@ -73,15 +73,15 @@
                     <c:forEach items="${Produits}" var="u">
                         <tr>
                     <form method='GET'>
-                            <td><input type="text" name="idProduit" value=${u.getReference()} /></td>
-                            <td>${u.getNom()}</td>
-                            <td>${u.getFournisseur()}</td>
-                            <td>${u.getQuantiteParUnite()}</td>
-                            <td>${u.getprixUnitaire()}</td>
-                            <td>${u.getUniteEnStock()}</td>
-                            <td>${u.getUniteCommande()}</td>
-                            <td>${u.getNiveauDeReaprovi()}</td>
-                            <td>${u.getIndisponible()}</td>
+                            <td><input type="text" name="idProduit" value="${u.getReference()}" /></td>
+                            <td><input type="text" name="nom" value="${u.getNom()}" /></td>
+                            <td><input type="text" name="ref" value="${u.getFournisseur()} "/></td>
+                            <td><input type="text" name="quantiteParUnit" value="${u.getQuantiteParUnite()}" /></td>
+                            <td><input type="text" name="prix" value="${u.getprixUnitaire()}" /></td>
+                            <td><input type="text" name="stock" value="${u.getUniteEnStock()}" /></td>
+                            <td><input type="text" name="commande" value="${u.getUniteCommande()}" /></td>
+                            <td><input type="text" name="reapro" value="${u.getNiveauDeReaprovi()}" /></td>
+                            <td><input type="text" name="indispo" value="${u.getIndisponible()}" /></td>
                             <td><input type="submit" name="action" value="X" ></td>
                             <td><input type="submit" name="action" value="Modifier"/></td>
                     </form>
