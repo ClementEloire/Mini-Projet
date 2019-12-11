@@ -34,6 +34,33 @@ public class ServletInfoClient extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException, Exception {
+        
+        String action = request.getParameter("action");
+        
+        switch(action) {
+            case "update":
+               /*DAO dao = new DAO(DataSourceFactory.getDataSource());
+                String code = (String) request.getAttribute("userName");
+                String contact = request.getParameter("Contact");
+                String societe = request.getParameter("Societe");
+                String fonction = request.getParameter("Fonction");
+                String adresse = request.getParameter("Adresse");
+                String ville = request.getParameter("Ville");
+                String region = request.getParameter("Region");
+                String codepostal = request.getParameter("CodePostal");
+                String pays = request.getParameter("Pays");
+                String tel = request.getParameter("Tel");
+                String fax = request.getParameter("Fax");
+                Client client = new Client(code, contact, societe, fonction, adresse, ville, region, codepostal, pays, tel, fax);
+                dao.updateClient(client);
+                client = dao.infoClient(code);
+                request.getSession(true).setAttribute("Client", client);
+                break;*/
+            case "Info Client":
+        }
+        
+        
+        
         request.getRequestDispatcher("protect/infoClient.jsp").forward(request, response);
     }
 
@@ -49,11 +76,7 @@ public class ServletInfoClient extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        try {
-            processRequest(request, response);
-        } catch (Exception ex) {
-            Logger.getLogger(ServletInfoClient.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        request.getRequestDispatcher("protect/infoClient.jsp").forward(request, response);
     }
 
     /**
