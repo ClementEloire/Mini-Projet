@@ -44,8 +44,7 @@ public class DAOTest {
     @Test
     public void testInfoClient() throws Exception {
         Client client = dao.infoClient("ALFKI");
-        System.out.println(client.getSociete());
-        Client client2 = new Client("ALFKI", "Alfreds Futterkiste", "Maria Anders", "Représentant(e)", "Obere Str. 57", "Berlin", null, "12209     ", "Allemagne", "030-0074321", "030-0076545");
+        Client client2 = new Client("ALFKI", "Alfreds Futterkiste", "Maria Anders", "Représentant(e)", "Obere Str. 57", "Frankfurt", null, "12209     ", "Allemagne", "030-0074321", "030-0076545");
         assertEquals(client.getCode(),client2.getCode());
         assertEquals(client.getSociete(),client2.getSociete());
         assertEquals(client.getFonction(),client2.getFonction());
@@ -57,10 +56,4 @@ public class DAOTest {
         assertEquals(client.getTel(),client2.getTel());
         assertEquals(client.getFax(),client2.getFax());
     }
-
-    // TODO add test methods here.
-    // The methods must be annotated with annotation @Test. For example:
-    //
-    // @Test
-    // public void hello() {}
 }
