@@ -50,15 +50,24 @@ public class ServletModifAdmin extends HttpServlet {
         request.setAttribute("Produits" , listeProduit);
         request.getRequestDispatcher("modifAdmin.jsp").forward(request, response);
         
-        
+        String idRef = request.getParameter("idProduit");
         String action = request.getParameter("action");
         if(null != action) {
             switch(action) {
                 case "X":
-                    dao.deleteProduit(0);
-                    request.getRequestDispatcher("modifAdmin.jsp").forward(request, response);
+                    dao.deleteProduit(Integer.valueOf(idRef));
+                    request.getRequestDispatcher("ServletModifAdmin").forward(request, response);
                     break;
                 case "Modifier":
+                    String nom = request.getParameter("nom");
+                    String ref = request.getParameter("ref");
+                    String quantite = request.getParameter("quantiteParUnit");
+                    String prix = request.getParameter("prix");
+                    String stock = request.getParameter("stock");
+                    String commande = request.getParameter("commande");
+                    String reapro = request.getParameter("reapro");
+                    String indispo = request.getParameter("indispo");
+                    
                     break;
                 case "Ajouter":
                     
