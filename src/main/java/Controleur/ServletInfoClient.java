@@ -39,7 +39,7 @@ public class ServletInfoClient extends HttpServlet {
         
         switch(action) {
             case "update":
-               /*DAO dao = new DAO(DataSourceFactory.getDataSource());
+                DAO dao = new DAO(DataSourceFactory.getDataSource());
                 String code = (String) request.getAttribute("userName");
                 String contact = request.getParameter("Contact");
                 String societe = request.getParameter("Societe");
@@ -55,13 +55,15 @@ public class ServletInfoClient extends HttpServlet {
                 dao.updateClient(client);
                 client = dao.infoClient(code);
                 request.getSession(true).setAttribute("Client", client);
-                break;*/
-            case "Info Client":
+                request.getRequestDispatcher("produitClient.jsp").forward(request, response);
+                break;
+            default:
+                request.getRequestDispatcher("protect/infoClient.jsp").forward(request, response);
         }
         
         
         
-        request.getRequestDispatcher("protect/infoClient.jsp").forward(request, response);
+        
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
