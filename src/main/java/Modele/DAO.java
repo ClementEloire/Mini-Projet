@@ -228,4 +228,23 @@ public class DAO {
 		}
 		return result;
         }
+        
+        public int addProduit (Produit produit) throws SQLException{
+            int result = 0;
+            String sql = "INSERT INTO PRODUIT VALUES (?,?,?,?,?,?,?,?,?)";
+            try (Connection connection = myDataSource.getConnection(); 
+		     PreparedStatement stmt = connection.prepareStatement(sql)) {
+                        stmt.setInt(1,produit.getReference());
+			stmt.setString(2, produit.getNom());
+                        stmt.setInt(3,produit.getFournisseur());
+                        stmt.setString(4,produit.getQuantiteParUnite());
+                        stmt.setFloat(5,produit.getprixUnitaire());
+                        stmt.setInt(6,produit.getUniteEnStock());
+                        stmt.setInt(7,produit.getUniteCommande());
+                        stmt.setInt(8,produit.getNiveauDeReaprovi());
+                        stmt.setInt(9,produit.getIndisponible());
+			result = stmt.executeUpdate();
+		}
+		return result;
+        }
 }
