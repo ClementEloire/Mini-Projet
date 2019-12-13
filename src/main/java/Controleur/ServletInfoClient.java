@@ -40,7 +40,7 @@ public class ServletInfoClient extends HttpServlet {
         switch(action) {
             case "update":
                 DAO dao = new DAO(DataSourceFactory.getDataSource());
-                String code = (String) request.getAttribute("userName");
+                String code = request.getParameter("CodeClient");
                 String contact = request.getParameter("Contact");
                 String societe = request.getParameter("Societe");
                 String fonction = request.getParameter("Fonction");
@@ -51,10 +51,10 @@ public class ServletInfoClient extends HttpServlet {
                 String pays = request.getParameter("Pays");
                 String tel = request.getParameter("Tel");
                 String fax = request.getParameter("Fax");
-                Client client = new Client(code, contact, societe, fonction, adresse, "Frankfurte", region, codepostal, pays, tel, fax);
+                Client client = new Client(code, societe, contact, fonction, adresse, "Frankfurte", region, codepostal, pays, tel, fax);
                 dao.updateClient(client); // N'update aucun client
-                /*client = dao.infoClient(code);
-                request.getSession(true).setAttribute("Client", client);*/
+                client = dao.infoClient(code);
+                request.getSession(true).setAttribute("Client", client);
                 request.getRequestDispatcher("protect/infoClient.jsp").forward(request, response);
                 break;
             default:
