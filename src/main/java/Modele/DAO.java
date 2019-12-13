@@ -14,6 +14,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.logging.Level;
@@ -247,4 +248,49 @@ public class DAO {
 		}
 		return result;
         }
+        
+        public HashMap<String,List<Ligne>> listeLigne(int commande) throws Exception {
+            List<Ligne> liste = new LinkedList<>();
+            String sql = "SELECT Nom, Quantite FROM Ligne JOIN Produit ON Produit = Reference WHERE Commande = ?";
+            try (Connection connection = myDataSource.getConnection(); 
+		     PreparedStatement stmt = connection.prepareStatement(sql)) {
+                stmt.setInt(1, commande);
+                ResultSet rs = stmt.executeQuery();
+                while(rs.next()) {
+                    String produit = rs.getString("Nom");
+                    int quantite = rs.getInt("Quantite");
+                    Ligne ligne = new Ligne(commande, produit, quantite);
+                    
+                    liste.add(ligne);
+                }
+            } catch(Exception ex) {
+                Logger.getLogger("DAO").log(Level.SEVERE, null, ex);
+                throw new Exception(ex.getMessage());
+            }
+            HashMap map = new HashMap<String, List<Ligne>>();
+            map.put(commande, liste);
+            return map;
+        }
+        
+        public int[] listeCommande(String code) throws Exception {
+            String sql = "SELECT Numero FROM Commande WHERE Code = ?";
+            int[] liste;
+            int cpt = 0;
+            try (Connection connection = myDataSource.getConnection(); 
+		     PreparedStatement stmt = connection.prepareStatement(sql)) {
+                stmt.setString(1, code);
+                ResultSet rs = stmt.executeQuery();
+                liste = new int[rs.getFetchSize()];
+                while(rs.next()) {
+                    liste[cpt] = rs.getInt("Numero");
+                    cpt+=1;
+                }
+            } catch(Exception ex) {
+                Logger.getLogger("DAO").log(Level.SEVERE, null, ex);
+                throw new Exception(ex.getMessage());
+            }
+            
+            return liste;
+        }      
+        
 }
