@@ -11,10 +11,10 @@ package Modele;
  */
 public class Ligne {
     private int commande;
-    private int produit;
+    private String produit;
     private int quantite;
     
-    public Ligne(int commande, int produit, int quantite) {
+    public Ligne(int commande, String produit, int quantite) {
         this.commande = commande;
         this.produit = produit;
         this.quantite = quantite;
