@@ -11,6 +11,8 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
 import Modele.*;
+import java.sql.SQLException;
+import java.util.List;
 
 /**
  *
@@ -64,4 +66,32 @@ public class DAOTest {
          client = dao.infoClient("RICAR");
          System.out.println(client.getAdresse());// TEST VISUEL
     }
+    
+    @Test
+    public void testListeCategorie() throws SQLException{
+        List<Categorie> listeCat = dao.listeDeCategorie();
+        assertEquals(listeCat.size(),8);  //Doit renvoyer 8 catégorie
+    }
+    
+    @Test
+    public void testListeProduit() throws SQLException {
+        List<Produit> listeprod = dao.listeDeProduit(1);
+        assertEquals(listeprod.size(),12); 
+    }
+    
+    @Test
+	public void testDeleteProduit () throws SQLException {
+            Produit produit = new Produit( 78,"Fanta",1,"6 x Canette (33cl)" ,6.75F, 30, 10,3,0);
+            assertEquals(1, dao.deleteProduit(78));
+	}
+     
+    public void testUpdateProduit() throws Exception {
+         Produit produit = new Produit( 66,"Doctor Pepper",1,"6 x Canette (33cl)" ,6.75F, 30, 10,3,0);
+         assertEquals(1, dao.updateProduit(produit));
+    }
+    public void testAddProduit() throws Exception {
+         Produit produit = new Produit( 99,"Coca Cola",1,"6 x Canette (33cl)" ,6.75F, 30, 10,3,0);
+         assertEquals(1, dao.updateProduit(produit));
+    }
 }
+
