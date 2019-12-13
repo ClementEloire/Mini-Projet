@@ -14,6 +14,7 @@
     </head>
     <body>
         <form method="POST" action="ServletInfoClient">
+            <input type="hidden" name="CodeClient" value="${sessionScope.Client.code}"/>
             Nom : <input name="Contact" value="${sessionScope.Client.contact}"/></br>
             Societe : <input name="Societe" value="${sessionScope.Client.societe}"/></br>
             Fonction : <input name="Fonction" value="${sessionScope.Client.fonction}"/></br>
