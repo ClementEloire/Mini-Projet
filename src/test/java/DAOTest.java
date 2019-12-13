@@ -44,7 +44,7 @@ public class DAOTest {
     @Test
     public void testInfoClient() throws Exception {
         Client client = dao.infoClient("ALFKI");
-        Client client2 = new Client("ALFKI", "Alfreds Futterkiste", "Maria Anders", "Représentant(e)", "Obere Str. 57", "Frankfurt", null, "12209     ", "Allemagne", "030-0074321", "030-0076545");
+        Client client2 = new Client("ALFKI", "Alfreds Futterkiste", "Maria Anders", "Representant(e)", "Obere Str. 57", "Frankfurte", "", "12209     ", "Allemagne", "030-0074321", "030-0076545");
         assertEquals(client.getCode(),client2.getCode());
         assertEquals(client.getSociete(),client2.getSociete());
         assertEquals(client.getFonction(),client2.getFonction());
