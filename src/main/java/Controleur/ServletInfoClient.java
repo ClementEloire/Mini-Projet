@@ -51,8 +51,8 @@ public class ServletInfoClient extends HttpServlet {
                 String pays = request.getParameter("Pays");
                 String tel = request.getParameter("Tel");
                 String fax = request.getParameter("Fax");
-                Client client = new Client(code, societe, contact, fonction, adresse, "Frankfurte", region, codepostal, pays, tel, fax);
-                dao.updateClient(client); // N'update aucun client
+                Client client = new Client(code, societe, contact, fonction, adresse, ville, region, codepostal, pays, tel, fax);
+                int rs = dao.updateClient(client); 
                 client = dao.infoClient(code);
                 request.getSession(true).setAttribute("Client", client);
                 request.getRequestDispatcher("protect/infoClient.jsp").forward(request, response);
