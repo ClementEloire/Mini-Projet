@@ -9,6 +9,7 @@ import Modele.*;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -37,16 +38,15 @@ public class ServletBonCommande extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException, Exception {
         DAO dao = new DAO(DataSourceFactory.getDataSource());
-        Client client = (Client) request.getAttribute("Client");
-        String code = client.getCode();
-        int[] commande = dao.listeCommande(code);
-        request.getSession(true).setAttribute("Commande", commande);
-        HashMap <String, List<Ligne>> map = new HashMap<>();
-        for(int i = 0 ; i < commande.length ; i++) {
-                map.putAll(dao.listeLigne(commande[i]));
+        String code = request.getParameter("CodeClient");
+        List<Commande> listeCom = dao.listeCommande(code);
+        List<BonCommande> listeBon = new LinkedList<>();
+        for(Commande com : listeCom) {
+            List<Ligne> ligne = dao.listeLigne(com.getCommande());
+            BonCommande bonCom = new BonCommande(com, ligne);
+            listeBon.add(bonCom);
         }
-        
-        request.getSession(true).setAttribute("Ligne", map);
+        request.setAttribute("BonCom", listeBon);
         request.getRequestDispatcher("protect/bonCommande.jsp").forward(request, response);
     }
 
