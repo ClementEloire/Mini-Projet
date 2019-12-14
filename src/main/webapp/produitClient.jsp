@@ -42,6 +42,7 @@
         <title>Visiteur</title>
     </head>
     <body>
+       
         <form action="login" method="POST">
             <input type='submit' name='action' value='logout'>
         </form>
@@ -68,6 +69,11 @@
             </table>
         <form action="ServletInfoClient" method="POST">    
             <input type='submit' name="action" value='Info Client'>
+        </form>
+        
+        <form action="ServletBonCommande" method="POST">    
+            <input type="hidden" name="CodeClient" value="${sessionScope.Client.code}"/>
+            <input type='submit' name="action" value='Bon Commande'>
         </form>
         
     </body>
