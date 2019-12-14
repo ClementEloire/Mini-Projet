@@ -12,8 +12,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import Modele.Client;
-import Modele.DAO;
+import Modele.*;
 import Modele.DataSourceFactory;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -122,6 +121,8 @@ public class ServletLogin extends HttpServlet {
             session.setAttribute("userName", password);
             Client client = dao.infoClient(password);
             request.getSession(true).setAttribute("Client", client);
+            PanierClient panier = new PanierClient(client);
+            request.getSession(true).setAttribute("Panier", panier);
         } else if(login.equals("admin") && password.equals("admin")){
             HttpSession session = request.getSession(true);
             session.setAttribute("userName", "admin");
