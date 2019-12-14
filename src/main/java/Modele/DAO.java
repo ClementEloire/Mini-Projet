@@ -289,6 +289,24 @@ public class DAO {
             }
             
             return liste;
-        }      
+        }
+        
+        public ProduitPanier infoProduit(int refProd, int qte) throws Exception {
+            String sql = "SELECT Nom, Prix_unitaire FROM Produit WHERE Reference = ?";
+            ProduitPanier panier = null;
+            try (Connection connection = myDataSource.getConnection(); 
+		     PreparedStatement stmt = connection.prepareStatement(sql)) {
+                stmt.setInt(1, refProd);
+                ResultSet rs = stmt.executeQuery();
+                if(rs.next()) {
+                    panier = new ProduitPanier(refProd, rs.getString("Nom"), rs.getDouble("Prix_unitaire"), qte);
+                }
+            }catch(Exception ex) {
+                Logger.getLogger("DAO").log(Level.SEVERE, null, ex);
+                throw new Exception(ex.getMessage());
+            }
+            
+            return panier;
+        }
         
 }
