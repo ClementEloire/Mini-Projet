@@ -309,4 +309,47 @@ public class DAO {
             return panier;
         }
         
+        public void creationCom(PanierClient panier) throws Exception {
+            String sql1 = "INSERT INTO Commande VALUES (?, ?,NOW(), NOW(), 0.0, ?, ?, ?, ?, ?, ?, 0.0)";
+            
+            String sql2 = "INSERT INTO Ligne VALUES (?, ?, ?)";
+            
+            String sql3 = "SELECT Numero FROM Commande ORDER BY Desc";
+            
+            try (Connection connection = myDataSource.getConnection(); 
+		     PreparedStatement stmt1 = connection.prepareStatement(sql1);
+                    PreparedStatement stmt2 = connection.prepareStatement(sql2);
+                    PreparedStatement stmt3 = connection.prepareStatement(sql3)) {
+                ResultSet rs3 = stmt3.executeQuery();
+                int numero = 0;
+                if(rs3.next()) {
+                    numero = rs3.getInt("Numero")+1;
+                }
+                
+                Client client = panier.getClient();
+                stmt1.setInt(1, numero);
+                stmt1.setString(2, client.getCode());
+                stmt1.setString(3, client.getSociete());
+                stmt1.setString(4, client.getAdresse());
+                stmt1.setString(5, client.getVille());
+                stmt1.setString(6, client.getRegion());
+                stmt1.setString(7, client.getCodePostal());
+                stmt1.setString(8, client.getPays());
+                
+                stmt1.executeUpdate();
+                List<ProduitPanier> produitListe = panier.getProduitPanier();
+                for(ProduitPanier prod : produitListe) {
+                        stmt2.setInt(1, numero);
+                        stmt2.setInt(2,prod.getRef());
+                        stmt2.setInt(3,prod.getQuantite());
+                        stmt2.executeUpdate();
+                }
+                
+            }catch(Exception ex) {
+                Logger.getLogger("DAO").log(Level.SEVERE, null, ex);
+                throw new Exception(ex.getMessage());
+            }
+            
+        }
+        
 }
