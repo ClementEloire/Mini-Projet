@@ -11,10 +11,14 @@ package Modele;
  */
 public class Commande {
     private int commande;
-    private double montantTot;
     
-    public Commande(int commande, double montantTot){
+    public Commande(int commande){
         this.commande = commande;
-        this.montantTot = montantTot;
     }
+    
+    public int getCommande() {
+        return this.commande;
+    }
+    
+    
 }
