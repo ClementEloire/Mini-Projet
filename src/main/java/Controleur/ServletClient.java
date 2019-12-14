@@ -5,9 +5,7 @@
  */
 package Controleur;
 
-import Modele.DAO;
-import Modele.DataSourceFactory;
-import Modele.Produit;
+import Modele.*;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.SQLException;
@@ -37,7 +35,7 @@ public class ServletClient extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException ,SQLException{
+            throws ServletException, IOException ,SQLException, Exception{
                
         DAO dao = new DAO(DataSourceFactory.getDataSource());
         String cat =  request.getParameter("Categorie");
@@ -48,6 +46,16 @@ public class ServletClient extends HttpServlet {
         List<Produit> listeProduit =dao.listeDeProduit(Integer.valueOf(cat)) ;
         request.setAttribute("CategoriesClient", dao.listeDeCategorie());
         request.setAttribute("ProduitsClient" , listeProduit);
+        String action = request.getParameter("action");
+        switch(action) {
+            case "Ajouter au panier":
+                String refProd = request.getParameter("RefProd");
+                String qte = request.getParameter("Quantite");
+                PanierClient panier = (PanierClient)request.getSession().getAttribute("Panier");
+                ProduitPanier prod = dao.infoProduit(Integer.parseInt(refProd), Integer.parseInt(qte));
+                panier.setProduitPanier(prod);
+                request.getSession().setAttribute("Panier", panier);
+        }
         request.getRequestDispatcher("produitClient.jsp").forward(request, response);
         
     }
@@ -69,6 +77,8 @@ public class ServletClient extends HttpServlet {
         }catch (SQLException ex) {
             String s = ex.getMessage();
             Logger.getLogger(ServletVisiteur.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (Exception ex) {
+            Logger.getLogger(ServletClient.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
@@ -87,6 +97,8 @@ public class ServletClient extends HttpServlet {
             processRequest(request, response);
         }catch (SQLException ex) {
             Logger.getLogger(ServletVisiteur.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (Exception ex) {
+            Logger.getLogger(ServletClient.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
