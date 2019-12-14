@@ -33,4 +33,8 @@ public class PanierClient {
         this.produit.add(prod);
     }
     
+    public void deleteProduitPanier(int index) {
+        this.produit.remove(index);
+    }
+    
 }
