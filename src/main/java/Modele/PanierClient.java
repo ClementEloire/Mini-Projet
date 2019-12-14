@@ -5,10 +5,32 @@
  */
 package Modele;
 
+import java.util.LinkedList;
+import java.util.List;
+
 /**
  *
  * @author Alexis Jalabert
  */
 public class PanierClient {
+    private Client client;
+    private List<ProduitPanier> produit;
+    
+    public PanierClient(Client client) {
+        this.client = client;
+        this.produit = new LinkedList<>();
+    }
+    
+    public Client getClient() {
+        return this.client;
+    }
+    
+    public List<ProduitPanier> getProduitPanier() {
+        return this.produit;
+    }
+    
+    public void setProduitPanier(ProduitPanier prod) {
+        this.produit.add(prod);
+    }
     
 }
