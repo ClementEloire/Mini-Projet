@@ -249,9 +249,9 @@ public class DAO {
 		return result;
         }
         
-        public HashMap<String,List<Ligne>> listeLigne(int commande) throws Exception {
+        public List<Ligne> listeLigne(int commande) throws Exception {
             List<Ligne> liste = new LinkedList<>();
-            String sql = "SELECT Nom, Quantite FROM Ligne JOIN Produit ON Produit = Reference WHERE Commande = ?";
+            String sql = "SELECT Nom, Quantite, Prix_unitaire FROM Ligne JOIN Produit ON Produit = Reference WHERE Commande = ?";
             try (Connection connection = myDataSource.getConnection(); 
 		     PreparedStatement stmt = connection.prepareStatement(sql)) {
                 stmt.setInt(1, commande);
@@ -259,7 +259,8 @@ public class DAO {
                 while(rs.next()) {
                     String produit = rs.getString("Nom");
                     int quantite = rs.getInt("Quantite");
-                    Ligne ligne = new Ligne(commande, produit, quantite);
+                    double prix = rs.getDouble("Prix_unitaire");
+                    Ligne ligne = new Ligne(commande, produit, quantite, prix);
                     
                     liste.add(ligne);
                 }
@@ -267,23 +268,20 @@ public class DAO {
                 Logger.getLogger("DAO").log(Level.SEVERE, null, ex);
                 throw new Exception(ex.getMessage());
             }
-            HashMap map = new HashMap<String, List<Ligne>>();
-            map.put(commande, liste);
-            return map;
+            
+            return liste;
         }
         
-        public int[] listeCommande(String code) throws Exception {
-            String sql = "SELECT Numero FROM Commande WHERE Code = ?";
-            int[] liste;
-            int cpt = 0;
+        public List<Commande> listeCommande(String code) throws Exception {
+            String sql = "SELECT Numero FROM Commande WHERE Client = ?";
+            List<Commande> liste = new LinkedList<>();
             try (Connection connection = myDataSource.getConnection(); 
 		     PreparedStatement stmt = connection.prepareStatement(sql)) {
                 stmt.setString(1, code);
                 ResultSet rs = stmt.executeQuery();
-                liste = new int[rs.getFetchSize()];
                 while(rs.next()) {
-                    liste[cpt] = rs.getInt("Numero");
-                    cpt+=1;
+                    Commande com = new Commande(rs.getInt("Numero"));
+                    liste.add(com);
                 }
             } catch(Exception ex) {
                 Logger.getLogger("DAO").log(Level.SEVERE, null, ex);
