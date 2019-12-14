@@ -54,12 +54,12 @@ public class ServletInfoClient extends HttpServlet {
                 Client client = new Client(code, societe, contact, fonction, adresse, ville, region, codepostal, pays, tel, fax);
                 int rs = dao.updateClient(client); 
                 client = dao.infoClient(code);
-                request.getSession(true).setAttribute("Client", client);
-                request.getRequestDispatcher("protect/infoClient.jsp").forward(request, response);
+                request.getSession().setAttribute("Client", client);
+                
                 break;
-            default:
-                request.getRequestDispatcher("protect/infoClient.jsp").forward(request, response);
         }
+        
+        request.getRequestDispatcher("protect/infoClient.jsp").forward(request, response);
         
         
         
