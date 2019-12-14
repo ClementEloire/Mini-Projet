@@ -21,4 +21,20 @@ public class ProduitPanier {
         this.prix = prix;
         this.quantite = quantite;
     }
+    
+    public int getRef() {
+        return this.ref;
+    }
+    
+    public String getNom() {
+        return this.nom;
+    }
+    
+    public double getPrix() {
+        return this.prix;
+    }
+    
+    public int getQuantite() {
+        return this.quantite;
+    }
 }
