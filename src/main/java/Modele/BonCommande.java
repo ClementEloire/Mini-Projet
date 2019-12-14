@@ -14,9 +14,28 @@ import java.util.List;
 public class BonCommande {
     private Commande commande;
     private List<Ligne> ligne;
+    private double montantTot;
     
     public BonCommande(Commande commande, List<Ligne> ligne) {
         this.commande = commande;
         this.ligne = ligne;
+        double somme = 0.0;
+        for(Ligne l : ligne) {
+            somme+=l.getMontant()*l.getQuantite();
+        }
+        
+        this.montantTot = somme;
+    }
+    
+    public Commande getCommandeObj() {
+        return this.commande;
+    }
+    
+    public List<Ligne> getLigne() {
+        return this.ligne;
+    }
+    
+    public double getMontantTot() {
+        return this.montantTot;
     }
 }
