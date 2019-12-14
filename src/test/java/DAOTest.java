@@ -14,6 +14,8 @@ import Modele.*;
 import java.sql.SQLException;
 import java.util.List;
 import javax.sql.DataSource;
+import org.junit.Ignore;
+
 
 /**
  *
@@ -74,8 +76,7 @@ public class DAOTest {
             dao.addProduit(produit);
             assertEquals(1, dao.deleteProduit(code));
 	}
-    
-    @Test
+     
     public void testUpdateProduit() throws Exception {
          Produit produit = new Produit( 66,"Doctor Pepper",1,1,"6 x Canette (33cl)" ,6.75F, 30, 10,3,0);
          assertEquals(1, dao.updateProduit(produit));
