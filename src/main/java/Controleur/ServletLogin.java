@@ -120,9 +120,9 @@ public class ServletLogin extends HttpServlet {
             HttpSession session = request.getSession(true);
             session.setAttribute("userName", password);
             Client client = dao.infoClient(password);
-            request.getSession(true).setAttribute("Client", client);
+            request.getSession().setAttribute("Client", client);
             PanierClient panier = new PanierClient(client);
-            request.getSession(true).setAttribute("Panier", panier);
+            request.getSession().setAttribute("Panier", panier);
         } else if(login.equals("admin") && password.equals("admin")){
             HttpSession session = request.getSession(true);
             session.setAttribute("userName", "admin");
