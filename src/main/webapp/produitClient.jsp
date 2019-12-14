@@ -64,6 +64,16 @@
                             <td>${u.getReference()}</td>
                             <td>${u.getNom()}</td>
                             <td>${u.getFournisseur()}</td>
+                            <form action="ServletClient" method="POST">
+                                <input type="hidden" name="Panier" value="${sessionScope.Panier}"/>
+                                <input type="hidden" name="RefProd" value="${u.getReference()}"/>
+                                <td><select name="Quantite">
+                                        <%for(int i = 1; i <= 99 ; i++) {
+                                            out.println("<option>"+i+"</option>");
+                                        }%>
+                                    </select></td>
+                                    <td><input name="action" type="submit" value="Ajouter au panier"/></td>
+                            </form>
                         </tr>
             </c:forEach>
             </table>
@@ -73,8 +83,12 @@
         
         <form action="ServletBonCommande" method="POST">    
             <input type="hidden" name="CodeClient" value="${sessionScope.Client.code}"/>
-            <input type='submit' name="action" value='Bon Commande'>
+            <input type='submit' name="action" value='Bon Commande'>s
         </form>
+            
+            <form action="ServletPanier" methode="POST">
+                <input type="submit" name="action" value="Panier Client"/>
+            </form>
         
     </body>
 </html>
