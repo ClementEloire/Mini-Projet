@@ -13,10 +13,24 @@ public class Ligne {
     private int commande;
     private String produit;
     private int quantite;
+    private double montant;
     
-    public Ligne(int commande, String produit, int quantite) {
+    public Ligne(int commande, String produit, int quantite, double montant) {
         this.commande = commande;
         this.produit = produit;
         this.quantite = quantite;
+        this.montant = montant;
+    }
+    
+    public String getProduit() {
+        return this.produit;
+    }
+    
+    public int getQuantite() {
+        return this.quantite;
+    }
+    
+    public double getMontant() {
+        return this.montant;
     }
 }
