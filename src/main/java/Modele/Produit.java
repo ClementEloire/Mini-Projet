@@ -14,6 +14,7 @@ public class Produit {
     private int reference;
     private String nom;
     private int fournisseur;
+    private int categorie;
     private String quantiteParUnite;
     private float prixUnitaire;
     private int uniteEnStock;
@@ -21,12 +22,13 @@ public class Produit {
     private int niveauDeReaprovi;
     private int indisponible;
     
-    public Produit(int reference,String nom,int fournisseur, String quantiteParUnite ,float prixUnitaire,
+    public Produit(int reference,String nom,int fournisseur,int categorie, String quantiteParUnite ,float prixUnitaire,
     int uniteEnStock, int uniteCommande,int niveauDeReaprovi,int indisponible){
         
         this.reference = reference;
         this.nom =nom;
         this.fournisseur =fournisseur;
+        this.categorie=categorie;
         this.quantiteParUnite =quantiteParUnite;
         this.prixUnitaire = prixUnitaire;
         this.uniteEnStock=uniteEnStock;
@@ -45,6 +47,10 @@ public class Produit {
     
     public int getFournisseur(){
         return this.fournisseur;
+    }
+    
+    public int getCategorie(){
+        return this.categorie;
     }
     
     public String getQuantiteParUnite(){

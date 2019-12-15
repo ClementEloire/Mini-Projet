@@ -62,20 +62,21 @@ public class DAO {
 	}
         
         
-        public List<Produit> listeDeProduit(int categorie) throws SQLException{
+        public List<Produit> listeDeProduit(int select) throws SQLException{
             List<Produit> result = new LinkedList<>();
             
             
             String sql = "SELECT * FROM Produit Where categorie = ?";
             try (Connection connection = myDataSource.getConnection();
                     PreparedStatement stmt = connection.prepareStatement(sql)) {
-                stmt.setInt(1, categorie);
+                stmt.setInt(1, select);
                     try (ResultSet rs = stmt.executeQuery()) {
                         while (rs.next()) { // Tant qu'il y a des enregistrements
 					// On récupère les champs nécessaires de l'enregistrement courant
 					int ref = rs.getInt("REFERENCE");
                                         String nom = rs.getString("NOM");
                                         int fournisseur = rs.getInt("FOURNISSEUR");
+                                        int categorie = rs.getInt("Categorie");
                                         String quantitéParUnite = rs.getString("QUANTITE_PAR_UNITE");
                                         float prixUnitaire = rs.getFloat("PRIX_UNITAIRE");
                                         int uniteEnStock = rs.getInt("UNITES_EN_STOCK");
@@ -83,7 +84,7 @@ public class DAO {
                                         int niveauDeReappro = rs.getInt("NIVEAU_DE_REAPPRO");
                                         int indispo = rs.getInt("INDISPONIBLE");
 					// On l'ajoute à la liste des résultats
-                                        Produit p = new Produit(ref,nom, fournisseur,quantitéParUnite,prixUnitaire, uniteEnStock,uniteCommander,niveauDeReappro,indispo);
+                                        Produit p = new Produit(ref,nom, fournisseur,categorie,quantitéParUnite,prixUnitaire, uniteEnStock,uniteCommander,niveauDeReappro,indispo);
 					result.add(p);
                         }
                     }
@@ -232,18 +233,19 @@ public class DAO {
         
         public int addProduit (Produit produit) throws SQLException{
             int result = 0;
-            String sql = "INSERT INTO PRODUIT VALUES (?,?,?,?,?,?,?,?,?)";
+            String sql = "INSERT INTO PRODUIT VALUES (?,?,?,?,?,?,?,?,?,?)";
             try (Connection connection = myDataSource.getConnection(); 
 		     PreparedStatement stmt = connection.prepareStatement(sql)) {
                         stmt.setInt(1,produit.getReference());
 			stmt.setString(2, produit.getNom());
                         stmt.setInt(3,produit.getFournisseur());
-                        stmt.setString(4,produit.getQuantiteParUnite());
-                        stmt.setFloat(5,produit.getprixUnitaire());
-                        stmt.setInt(6,produit.getUniteEnStock());
-                        stmt.setInt(7,produit.getUniteCommande());
-                        stmt.setInt(8,produit.getNiveauDeReaprovi());
-                        stmt.setInt(9,produit.getIndisponible());
+                        stmt.setInt(4, produit.getCategorie());
+                        stmt.setString(5,produit.getQuantiteParUnite());
+                        stmt.setFloat(6,produit.getprixUnitaire());
+                        stmt.setInt(7,produit.getUniteEnStock());
+                        stmt.setInt(8,produit.getUniteCommande());
+                        stmt.setInt(9,produit.getNiveauDeReaprovi());
+                        stmt.setInt(10,produit.getIndisponible());
 			result = stmt.executeUpdate();
 		}
 		return result;

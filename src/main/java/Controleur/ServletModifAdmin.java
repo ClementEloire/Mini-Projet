@@ -61,14 +61,15 @@ public class ServletModifAdmin extends HttpServlet {
                 case "Modifier":
                     String nom = request.getParameter("nom");
                     String fournisseur = request.getParameter("fournisseur");
+                    String cate = request.getParameter("cate");
                     String quantite = request.getParameter("quantiteParUnit");
                     String prix = request.getParameter("prix");
                     String stock = request.getParameter("stock");
                     String commande = request.getParameter("commande");
                     String reapro = request.getParameter("reapro");
                     String indispo = request.getParameter("indispo");
-                    Produit produit = new Produit(Integer.valueOf(idRef),nom,Integer.valueOf(fournisseur),quantite,Float.valueOf(prix),Integer.valueOf(stock),Integer.valueOf(commande),Integer.valueOf(reapro),Integer.valueOf(indispo));
-                    dao.updateProduit(produit);
+                    Produit produit = new Produit(Integer.valueOf(idRef),nom,Integer.valueOf(fournisseur),Integer.valueOf(cate),quantite,Float.valueOf(prix),Integer.valueOf(stock),Integer.valueOf(commande),Integer.valueOf(reapro),Integer.valueOf(indispo));
+                    int rs = dao.updateProduit(produit);
                     break;
                 case "Ajouter":
                     

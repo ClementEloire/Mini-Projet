@@ -44,15 +44,16 @@
     </head>
     <body>
         
-        <form>
-            <select name='Categorie' onchange='this.form.submit()'>
+        <form action="ServletVisiteur">
+            <select name="Categorie" id="Categorie" onchange='this.form.submit()'>
                 <c:forEach var="Categorie" items="${Categories}">
                     <option value='${Categorie.getCode()}'
-                            selected
-                    >${Categorie.getLibelle()}</option>
+                       
+                                selected 
+                    >${Categorie.getLibelle()}
+                    </option>
                 </c:forEach>
             </select>
-        <input type='submit'>
         </form>
             <table border=2>
                  <tr> <th>Références</th> <th>Nom</th> <th>Fournisseur</th> </tr>

@@ -19,7 +19,7 @@
         </listener-class>
     </listener>
     <welcome-file-list>
-        <welcome-file>Visiteur.jsp</welcome-file>
+        <welcome-file>ServletVisiteur</welcome-file>
     </welcome-file-list>
     <filter>
         <filter-name>ProtectFilter</filter-name>
