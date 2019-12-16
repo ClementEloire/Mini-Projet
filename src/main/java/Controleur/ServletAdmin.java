@@ -5,9 +5,15 @@
  */
 package Controleur;
 
+import Modele.DAO;
+import Modele.DataSourceFactory;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.SQLException;
+import java.util.Collections;
+import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.ServletException;
@@ -34,7 +40,24 @@ public class ServletAdmin extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException,SQLException {
+        DAO dao = new DAO(DataSourceFactory.getDataSource());
+        String DateDebut = request.getParameter("dateD");
+        String DateFin = request.getParameter("dateF");
+        Properties resultat = new Properties();
+        try{
+            resultat.put("records", dao.chiffreAffCat(DateDebut, DateFin));
+        }catch(SQLException ex){
+            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            resultat.put("records", Collections.EMPTY_LIST);
+            resultat.put("message", ex.getMessage());
+        }
         
+        try (PrintWriter out = response.getWriter()) {
+            // On spécifie que la servlet va générer du JSON
+            response.setContentType("application/json;charset=UTF-8");
+            Gson gson = new GsonBuilder().setPrettyPrinting().create();
+            out.println(gson.toJson(resultat));
+        }
         request.getRequestDispatcher("graphAdmin.jsp").forward(request, response);
        
         }

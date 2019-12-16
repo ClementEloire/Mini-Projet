@@ -353,5 +353,57 @@ public class DAO {
             }
             
         }
+        public  float calculPrix(int numCommand) throws SQLException{
+          
+         float result = 0F;
+          String sql = "Select ligne.quantite, produit.prix_unitaire from produit inner join ligne on ligne.produit = produit.reference where ligne.commande = ?";
+          
+          // Recherche de la commande dont on veut calculer le prix:
+          
+          try(Connection connection = this.myDataSource.getConnection();
+                  PreparedStatement stmt = connection.prepareStatement(sql)
+                  ){
+              stmt.setInt(1, numCommand);
+              try(ResultSet rs = stmt.executeQuery()){
+                  while(rs.next()){
+                       int qt = rs.getInt(1);
+                        float prix = rs.getFloat(2);
+                        result += qt * prix;
+                         }
+                 
+                    }
+              }
+          return result;
+     }
+        public List<Graphe> chiffreAffCat(String dateDebut, String dateFin) throws SQLException{
+       String sql1 ="SELECT  numero  FROM COMMANDE WHERE saisie_le > ? AND  saisie_le < ? ";
+       
+       String sql2 = "SELECT * FROM  CATEGORIE";
+       
+       List<Graphe> result = new LinkedList<>();
+       
+       try(
+                 Connection connection = myDataSource.getConnection();
+                 PreparedStatement stmt1 = connection.prepareStatement(sql2 )  ;
+                 PreparedStatement stmt2 = connection.prepareStatement(sql1)
+               ){
+           ResultSet rs1 = stmt1.executeQuery();
+           // Initialisation de la liste avec toute les catégorie
+          while(rs1.next()){
+              int cat = rs1.getInt("code");
+              stmt2.setString(1, dateDebut);
+              stmt2.setString(2, dateFin);
+               ResultSet rs2 = stmt2.executeQuery();
+               float prixCat = 0F;
+               while(rs2.next()){
+                   prixCat +=  this.calculPrix(rs2.getInt(1));
+               }
+               result.add(new Graphe(rs1.getString("libelle"), prixCat));
+          }
+       }
+        return result;
+    }
+        
+        
         
 }

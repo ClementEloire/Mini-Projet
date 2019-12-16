@@ -73,7 +73,7 @@ public class ApplicationListener implements ServletContextListener {
 			} else {
 				Logger.getLogger("Projets").log(Level.SEVERE, "Errors creating database");
 			}
-		} catch (Exception e) {
+		} catch (UnsupportedEncodingException | SQLException e) {
                         String s = e.getMessage();
 			Logger.getLogger("Projets").log(Level.SEVERE, null, e);
 		}

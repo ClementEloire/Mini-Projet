@@ -73,10 +73,10 @@
                     <c:forEach items="${Produits}" var="u">
                         <tr>
                     <form method='POST'>
-                            <td><input type="text" name="idProduit" value="${u.getReference()}" /></td>
+                            <td><input name="idProduit" value="${u.getReference()}" /></td>
                             <td><input type="text" name="nom" value="${u.getNom()}" /></td>
-                            <td><input type="text" name="fournisseur" value="${u.getFournisseur()} "/></td>
-                            <td hidden><input type="text" name="cate" value="${u.getCategorie()} "/></td>
+                            <td><input type="text" name="fournisseur" value="${u.getFournisseur()}"/></td>
+                            <td hidden><input type="text" name="cate" value="${u.getCategorie()}"/></td>
                             <td><input type="text" name="quantiteParUnit" value="${u.getQuantiteParUnite()}" /></td>
                             <td><input type="text" name="prix" value="${u.getprixUnitaire()}" /></td>
                             <td><input type="text" name="stock" value="${u.getUniteEnStock()}" /></td>
