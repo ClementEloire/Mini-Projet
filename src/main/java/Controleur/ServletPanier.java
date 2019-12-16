@@ -45,6 +45,7 @@ public class ServletPanier extends HttpServlet {
                 dao.creationCom(panier);
                 Client client = (Client)request.getSession().getAttribute("Client");
                 request.getSession().setAttribute("Panier", new PanierClient(client));
+                request.getRequestDispatcher("ServletClient").forward(request, response);
                 break;
             
             case "Supprimer":
@@ -57,15 +58,19 @@ public class ServletPanier extends HttpServlet {
                 }
                 panier.deleteProduitPanier(index);
                 request.getSession().setAttribute("Panier", panier);
+                request.getRequestDispatcher("protect/panierClient.jsp").forward(request, response);
                 break;
                 
             case "Modifier":
                 break;
-            
+                
+            default:
+                request.getRequestDispatcher("protect/panierClient.jsp").forward(request, response);
+                break;
             
         }
         
-        request.getRequestDispatcher("protect/panierClient.jsp").forward(request, response);
+        
         
     }
 
