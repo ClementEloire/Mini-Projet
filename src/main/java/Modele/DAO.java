@@ -20,6 +20,9 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.sql.DataSource;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
 
 public class DAO {
 
@@ -312,11 +315,16 @@ public class DAO {
         }
         
         public void creationCom(PanierClient panier) throws Exception {
-            String sql1 = "INSERT INTO Commande VALUES (?, ?,NOW(), NOW(), 0.0, ?, ?, ?, ?, ?, ?, 0.0)";
+            
+            SimpleDateFormat formater = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+            
+            Date aujourdhui = new Date();
+            String date = formater.format(aujourdhui);
+            String sql1 = "INSERT INTO Commande VALUES (?, ?,?, ?, 0.0, ?, ?, ?, ?, ?, ?, 0.0)";
             
             String sql2 = "INSERT INTO Ligne VALUES (?, ?, ?)";
             
-            String sql3 = "SELECT Numero FROM Commande ORDER BY Desc";
+            String sql3 = "SELECT Numero FROM Commande ORDER BY Numero DESC";
             
             try (Connection connection = myDataSource.getConnection(); 
 		     PreparedStatement stmt1 = connection.prepareStatement(sql1);
@@ -331,12 +339,14 @@ public class DAO {
                 Client client = panier.getClient();
                 stmt1.setInt(1, numero);
                 stmt1.setString(2, client.getCode());
-                stmt1.setString(3, client.getSociete());
-                stmt1.setString(4, client.getAdresse());
-                stmt1.setString(5, client.getVille());
-                stmt1.setString(6, client.getRegion());
-                stmt1.setString(7, client.getCodePostal());
-                stmt1.setString(8, client.getPays());
+                stmt1.setString(3,date);
+                stmt1.setString(4,date);
+                stmt1.setString(5, client.getSociete());
+                stmt1.setString(6, client.getAdresse());
+                stmt1.setString(7, client.getVille());
+                stmt1.setString(8, client.getRegion());
+                stmt1.setString(9, client.getCodePostal());
+                stmt1.setString(10, client.getPays());
                 
                 stmt1.executeUpdate();
                 List<ProduitPanier> produitListe = panier.getProduitPanier();
@@ -349,6 +359,7 @@ public class DAO {
                 
             }catch(Exception ex) {
                 Logger.getLogger("DAO").log(Level.SEVERE, null, ex);
+                String err = ex.getMessage();
                 throw new Exception(ex.getMessage());
             }
             
