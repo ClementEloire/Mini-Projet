@@ -60,5 +60,10 @@
             </c:forEach>
             </table><br/>
         </c:forEach>
+            
+        
+        <form action="ServletClient" method="POST">
+            <input type="submit" value="Page produit"/>
+        </form>
     </body>
 </html>
