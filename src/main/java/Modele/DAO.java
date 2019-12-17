@@ -371,57 +371,129 @@ public class DAO {
             return result;
             
         }
-        public  float calculPrix(int numCommand) throws SQLException{
-          
-         float result = 0F;
-          String sql = "Select ligne.quantite, produit.prix_unitaire from produit inner join ligne on ligne.produit = produit.reference where ligne.commande = ?";
-          
-          // Recherche de la commande dont on veut calculer le prix:
-          
-          try(Connection connection = this.myDataSource.getConnection();
-                  PreparedStatement stmt = connection.prepareStatement(sql)
-                  ){
-              stmt.setInt(1, numCommand);
-              try(ResultSet rs = stmt.executeQuery()){
-                  while(rs.next()){
-                       int qt = rs.getInt(1);
-                        float prix = rs.getFloat(2);
-                        result += qt * prix;
-                         }
-                 
-                    }
-              }
-          return result;
-     }
-        public List<Graphe> chiffreAffCat(String dateDebut, String dateFin) throws SQLException{
-       String sql1 ="SELECT  numero  FROM COMMANDE WHERE saisie_le > ? AND  saisie_le < ? ";
+        
+        /*public List<Graphe> graphePays(String dateDebut, String dateFin) throws SQLException{
+        String sql1 ="SELECT SUM(QUANTITE*PRIX_UNITAIRE) AS TOTAL,COMMANDE.PAYS_LIVRAISON\n" +
+                                "FROM PRODUIT INNER JOIN LIGNE ON LIGNE.PRODUIT = PRODUIT.REFERENCE\n" +
+                                "INNER JOIN CATEGORIE ON PRODUIT.CATEGORIE=CATEGORIE.CODE\n" +
+                                "INNER JOIN COMMANDE ON LIGNE.COMMANDE=COMMANDE.NUMERO\n" +
+                                "WHERE COMMANDE.SAISIE_LE BETWEEN ? AND ? " +
+                                "GROUP BY COMMANDE.PAYS_LIVRAISON ORDER BY TOTAL";
+        List<Graphe> result = new LinkedList<>();
        
-       String sql2 = "SELECT * FROM  CATEGORIE";
-       
-       List<Graphe> result = new LinkedList<>();
-       
-       try(
+        try(
                  Connection connection = myDataSource.getConnection();
-                 PreparedStatement stmt1 = connection.prepareStatement(sql2 )  ;
-                 PreparedStatement stmt2 = connection.prepareStatement(sql1)
+                 PreparedStatement stmt1 = connection.prepareStatement(sql1 )  ;
                ){
-           ResultSet rs1 = stmt1.executeQuery();
-           // Initialisation de la liste avec toute les catégorie
-          while(rs1.next()){
-              int cat = rs1.getInt("code");
-              stmt2.setString(1, dateDebut);
-              stmt2.setString(2, dateFin);
-               ResultSet rs2 = stmt2.executeQuery();
-               float prixCat = 0F;
-               while(rs2.next()){
-                   prixCat +=  this.calculPrix(rs2.getInt(1));
-               }
-               result.add(new Graphe(rs1.getString("libelle"), prixCat));
+            if(dateDebut == null || dateFin==null){
+                stmt1.setString(1, "1994-08-04");
+                stmt1.setString(2, "1996-06-05");
+            }else{
+                stmt1.setString(1, dateDebut);
+                stmt1.setString(2, dateFin);
+            }
+            
+            ResultSet rs1 = stmt1.executeQuery();
+            while(rs1.next()){
+            String pays = rs1.getString("PAYS_LIVRAISON");
+            float prix = rs1.getFloat("TOTAL");
+            result.add(new Graphe(pays, prix));
+            }
           }
-       }
         return result;
-    }
+    }   */
+        
+        public HashMap<String,Float> graphePays(String dateDebut, String dateFin) throws SQLException{
+        String sql1 ="SELECT SUM(QUANTITE*PRIX_UNITAIRE) AS TOTAL,COMMANDE.PAYS_LIVRAISON\n" +
+                                "FROM PRODUIT INNER JOIN LIGNE ON LIGNE.PRODUIT = PRODUIT.REFERENCE\n" +
+                                "INNER JOIN CATEGORIE ON PRODUIT.CATEGORIE=CATEGORIE.CODE\n" +
+                                "INNER JOIN COMMANDE ON LIGNE.COMMANDE=COMMANDE.NUMERO\n" +
+                                "WHERE COMMANDE.SAISIE_LE BETWEEN ? AND ? " +
+                                "GROUP BY COMMANDE.PAYS_LIVRAISON ORDER BY TOTAL";
+        HashMap<String,Float> result = new HashMap<>();
+       
+        try(
+                 Connection connection = myDataSource.getConnection();
+                 PreparedStatement stmt1 = connection.prepareStatement(sql1 )  ;
+               ){
+            if(dateDebut == null || dateFin==null){
+                stmt1.setString(1, "1994-08-04");
+                stmt1.setString(2, "1996-06-05");
+            }else{
+                stmt1.setString(1, dateDebut);
+                stmt1.setString(2, dateFin);
+            }
+            
+            ResultSet rs1 = stmt1.executeQuery();
+            while(rs1.next()){
+            String pays = rs1.getString("PAYS_LIVRAISON");
+            float prix = rs1.getFloat("TOTAL");
+            result.put(pays, prix);
+            }
+          }
+        return result;
+    }  
         
         
-        
+        public HashMap<String,Float> grapheCategorie(String dateDebut, String dateFin) throws SQLException{
+        String sql1 ="SELECT SUM(QUANTITE*PRIX_UNITAIRE) AS TOTAL,LIBELLE\n" +
+                                "FROM PRODUIT INNER JOIN LIGNE ON LIGNE.PRODUIT = PRODUIT.REFERENCE\n" +
+                                "INNER JOIN CATEGORIE ON PRODUIT.CATEGORIE=CATEGORIE.CODE\n" +
+                                "INNER JOIN COMMANDE ON LIGNE.COMMANDE=COMMANDE.NUMERO\n" +
+                                "WHERE COMMANDE.SAISIE_LE BETWEEN ? AND ? " +
+                                "GROUP BY CATEGORIE.LIBELLE ORDER BY TOTAL";
+        HashMap<String,Float> result = new HashMap<>();
+       
+        try(
+                 Connection connection = myDataSource.getConnection();
+                 PreparedStatement stmt1 = connection.prepareStatement(sql1 )  ;
+               ){
+            if(dateDebut == null || dateFin==null){
+                stmt1.setString(1, "1994-08-04");
+                stmt1.setString(2, "1996-06-05");
+            }else{
+                stmt1.setString(1, dateDebut);
+                stmt1.setString(2, dateFin);
+            }
+            
+            ResultSet rs1 = stmt1.executeQuery();
+            while(rs1.next()){
+            String pays = rs1.getString("LIBELLE");
+            float prix = rs1.getFloat("TOTAL");
+            result.put(pays, prix);
+            }
+          }
+        return result;
+    }  
+         public HashMap<String,Float> grapheClient(String dateDebut, String dateFin) throws SQLException{
+        String sql1 ="SELECT SUM(QUANTITE*PRIX_UNITAIRE) AS TOTAL,CLIENT.SOCIETE\n" +
+                                "FROM PRODUIT INNER JOIN LIGNE ON LIGNE.PRODUIT = PRODUIT.REFERENCE\n" +
+                                "INNER JOIN CATEGORIE ON PRODUIT.CATEGORIE=CATEGORIE.CODE\n" +
+                                "INNER JOIN COMMANDE ON LIGNE.COMMANDE=COMMANDE.NUMERO\n" +
+                                "INNER JOIN CLIENT ON COMMANDE.CLIENT=CLIENT.CODE\n"+
+                                "WHERE COMMANDE.SAISIE_LE BETWEEN ? AND ? " +
+                                "GROUP BY CLIENT.SOCIETE ORDER BY TOTAL";
+        HashMap<String,Float> result = new HashMap<>();
+       
+        try(
+                 Connection connection = myDataSource.getConnection();
+                 PreparedStatement stmt1 = connection.prepareStatement(sql1 )  ;
+               ){
+            if(dateDebut == null || dateFin==null){
+                stmt1.setString(1, "1994-08-04");
+                stmt1.setString(2, "1996-06-05");
+            }else{
+                stmt1.setString(1, dateDebut);
+                stmt1.setString(2, dateFin);
+            }
+            
+            ResultSet rs1 = stmt1.executeQuery();
+            while(rs1.next()){
+            String pays = rs1.getString("SOCIETE");
+            float prix = rs1.getFloat("TOTAL");
+            result.put(pays, prix);
+            }
+          }
+        return result;
+    }  
 }

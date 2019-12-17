@@ -45,22 +45,24 @@ public class ServletAdmin extends HttpServlet {
         String DateFin = request.getParameter("dateF");
         Properties resultat = new Properties();
         try{
-            resultat.put("records", dao.chiffreAffCat(DateDebut, DateFin));
+            resultat.put("records", dao.graphePays(DateDebut, DateFin));
+            resultat.put("records2", dao.grapheCategorie(DateDebut, DateFin));
+            resultat.put("records3", dao.grapheClient(DateDebut, DateFin));
+            
         }catch(SQLException ex){
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             resultat.put("records", Collections.EMPTY_LIST);
+            resultat.put("records2", Collections.EMPTY_LIST);
+            resultat.put("records3", Collections.EMPTY_LIST);
             resultat.put("message", ex.getMessage());
         }
-        
         try (PrintWriter out = response.getWriter()) {
             // On spécifie que la servlet va générer du JSON
             response.setContentType("application/json;charset=UTF-8");
             Gson gson = new GsonBuilder().setPrettyPrinting().create();
             out.println(gson.toJson(resultat));
         }
-        request.getRequestDispatcher("graphAdmin.jsp").forward(request, response);
-       
-        }
+    }
     
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
