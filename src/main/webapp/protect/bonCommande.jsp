@@ -64,7 +64,7 @@
             
         
         <form action="ServletClient" method="POST">
-            <input type="submit" value="Page produit"/>
+            <input type="submit" name="action" value="Page produit"/>
         </form>
     </body>
 </html>
