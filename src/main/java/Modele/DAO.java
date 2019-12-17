@@ -327,14 +327,10 @@ public class DAO {
             
             String sql3 = "SELECT Numero FROM Commande ORDER BY Numero DESC";
             
-            String sql4 = "UPDATE Produit SET Unites_commandees = Unites_commandees - ? WHERE Reference = ?";
-            
             try (Connection connection = myDataSource.getConnection(); 
 		     PreparedStatement stmt1 = connection.prepareStatement(sql1);
                     PreparedStatement stmt2 = connection.prepareStatement(sql2);
-                    PreparedStatement stmt3 = connection.prepareStatement(sql3);
-                    PreparedStatement stmt4 = connection.prepareStatement(sql4)) {
-                connection.setAutoCommit(false);
+                    PreparedStatement stmt3 = connection.prepareStatement(sql3)) {
                 try {
                     ResultSet rs3 = stmt3.executeQuery();
                     int numero = 0;
@@ -360,15 +356,10 @@ public class DAO {
                             stmt2.setInt(1, numero);
                             stmt2.setInt(2,prod.getRef());
                             stmt2.setInt(3,prod.getQuantite());
-                            stmt4.setInt(1, prod.getQuantite());
-                            stmt4.setInt(2, prod.getRef());
                             stmt2.executeUpdate();
                     }
                 }catch(Exception ex) {
-                    connection.rollback();
                     throw ex;
-                } finally {
-                    connection.setAutoCommit(true);
                 }
                 
                 
