@@ -372,6 +372,28 @@ public class DAO {
             
         }
         
+        public  float calculPrix(int numCommand) throws SQLException{
+
+         float result = 0F;
+          String sql = "Select ligne.quantite, produit.prix_unitaire from produit inner join ligne on ligne.produit = produit.reference where ligne.commande = ?";
+
+          // Recherche de la commande dont on veut calculer le prix:
+
+          try(Connection connection = this.myDataSource.getConnection();
+                  PreparedStatement stmt = connection.prepareStatement(sql)
+                  ){
+              stmt.setInt(1, numCommand);
+              try(ResultSet rs = stmt.executeQuery()){
+                  while(rs.next()){
+                       int qt = rs.getInt(1);
+                        float prix = rs.getFloat(2);
+                        result += qt * prix;
+                         }
+
+                    }
+              }
+          return result;
+     }
         /*public List<Graphe> graphePays(String dateDebut, String dateFin) throws SQLException{
         String sql1 ="SELECT SUM(QUANTITE*PRIX_UNITAIRE) AS TOTAL,COMMANDE.PAYS_LIVRAISON\n" +
                                 "FROM PRODUIT INNER JOIN LIGNE ON LIGNE.PRODUIT = PRODUIT.REFERENCE\n" +
