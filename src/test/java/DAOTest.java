@@ -13,6 +13,7 @@ import static org.junit.Assert.*;
 import Modele.*;
 import static Modele.DataSourceFactory.getDataSource;
 import java.sql.SQLException;
+import java.util.LinkedList;
 import java.util.List;
 import javax.sql.DataSource;
 import org.junit.Ignore;
@@ -33,7 +34,7 @@ public class DAOTest {
         dao = new DAO(myDataSource); 
     }
     
-    
+    /*
     @Test
     public void testInfoClient() throws Exception {
         Client client = dao.infoClient("ALFKI");
@@ -48,7 +49,7 @@ public class DAOTest {
         assertEquals(client.getPays(),client2.getPays());
         assertEquals(client.getTel(),client2.getTel());
         assertEquals(client.getFax(),client2.getFax());
-    }
+    }*/
     
     @Test
     public void testUpdateClient() throws Exception {
@@ -89,5 +90,71 @@ public class DAOTest {
          assertEquals(1, dao.addProduit(produit));
          dao.deleteProduit(99);
     }
+    
+    @Test
+    public void testLoginClient() throws Exception {
+        String nom1 = "Maria Anders";
+        String mdp1 = "ALFKI";
+        String nom2 = "Alexis Jalabert";
+        String mdp2 = "JAJAJ";
+        assertEquals(dao.loginClient(nom1, mdp1), true);
+        assertEquals(dao.loginClient(nom2, mdp2), false);
+    }
+    
+    @Test
+    public void testListeLigne() throws Exception {
+        List<Ligne> ligne = new LinkedList<>();
+        ligne.add(new Ligne(10361, "Chartreuse verte",54, 90.0 ));
+        ligne.add(new Ligne(10361, "Camembert Pierrot", 55, 170.0));
+        List<Ligne> ligne2 = dao.listeLigne(10361);
+        for(int i = 0 ; i < ligne.size() ; i++){
+            Ligne lign = ligne.get(i);
+            Ligne lign2 = ligne2.get(i);
+            assertEquals(lign.getProduit(), lign2.getProduit());
+            assertEquals(lign.getQuantite(), lign2.getQuantite());
+            
+        }
+    }
+    
+    @Test
+    public void testListeCommande() throws Exception {
+        int[] listeCom = new int[4];
+        List<Commande> liste = dao.listeCommande("ALFKI");
+        listeCom[0] = 10702;
+        listeCom[1] = 10835;
+        listeCom[2] = 10952;
+        listeCom[3] = 11011;
+        for(int i = 0 ; i < listeCom.length ; i++) {
+            Commande com = liste.get(i);
+            assertEquals(listeCom[i], com.getCommande());
+        }
+       
+    }
+    
+    @Test
+    public void testInfoProduit() throws Exception {
+        ProduitPanier prod1 = new ProduitPanier(59, "Raclette Courdavault", 275.0, 15);
+        ProduitPanier prod2 = dao.infoProduit(59, 15);
+        assertEquals(prod1.getRef(), prod2.getRef());
+        assertEquals(prod1.getNom(), prod2.getNom());
+        assertEquals(prod1.getQuantite(), prod2.getQuantite());
+    }
+    
+    @Test
+    public void testCalculPrix() throws Exception {
+        double prixTot = 13380.0;
+        assertEquals(prixTot, dao.calculPrix(10273), 0.0);
+    }
+    
+    @Test
+    public void testCreationCom() throws Exception {
+        Client client = dao.infoClient("QUICK");
+        ProduitPanier prod1 = dao.infoProduit(59,15);
+        ProduitPanier prod2 = dao.infoProduit(2,28);
+        PanierClient panier = new PanierClient(client);
+        panier.setProduitPanier(prod1);
+        panier.setProduitPanier(prod2);
+        int expected = 3;
+        assertEquals(expected, dao.creationCom(panier));
+    }
 }
-
