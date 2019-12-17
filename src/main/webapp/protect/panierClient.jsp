@@ -42,6 +42,7 @@
         <title>Panier</title>
     </head>
     <body>
+        <h1>Panier Client</h1>
         <table border=2>
             <tr> <th>Références</th> <th>Nom</th> <th>Quantite</th> <th>Prix</th> <th></th></tr>
             <c:forEach items="${Produit}" var="u">
