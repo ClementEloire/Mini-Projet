@@ -42,10 +42,11 @@
         <title>Bon de commande</title>
     </head>
     <body>
+        <h1>Bon de commande</h1>
         <c:forEach items="${BonCom}" var="u">
             Commande ref : ${u.getCommandeObj().getCommande()}</br>
             Montant total : ${u.getMontantTot()}€</br>
-            <table>
+            <table border=2>
                 <tr>
                     <td>Nom</td>
                     <td>Quantite</td>
