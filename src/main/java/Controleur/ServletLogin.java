@@ -56,7 +56,7 @@ public class ServletLogin extends HttpServlet {
         if(userName == null) {
             jspView = "login.jsp";
         } else if(identifiant.equals("admin") && password.equals("admin")) {
-            jspView = "ServletAdmin";
+            jspView = "graphAdmin.html";
         }else {
             jspView = "ServletClient";
         }
