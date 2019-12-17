@@ -314,8 +314,8 @@ public class DAO {
             return panier;
         }
         
-        public void creationCom(PanierClient panier) throws Exception {
-            
+        public int creationCom(PanierClient panier) throws Exception {
+            int result = 0;
             SimpleDateFormat formater = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
             
             Date aujourdhui = new Date();
@@ -350,13 +350,13 @@ public class DAO {
                     stmt1.setString(9, client.getCodePostal());
                     stmt1.setString(10, client.getPays());
 
-                    stmt1.executeUpdate();
+                    result += stmt1.executeUpdate();
                     List<ProduitPanier> produitListe = panier.getProduitPanier();
                     for(ProduitPanier prod : produitListe) {
                             stmt2.setInt(1, numero);
                             stmt2.setInt(2,prod.getRef());
                             stmt2.setInt(3,prod.getQuantite());
-                            stmt2.executeUpdate();
+                            result += stmt2.executeUpdate();
                     }
                 }catch(Exception ex) {
                     throw ex;
@@ -367,6 +367,8 @@ public class DAO {
                 Logger.getLogger("DAO").log(Level.SEVERE, null, ex);
                 throw new Exception(ex.getMessage());
             }
+            
+            return result;
             
         }
         public  float calculPrix(int numCommand) throws SQLException{
