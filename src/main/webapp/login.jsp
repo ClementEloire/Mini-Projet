@@ -7,6 +7,7 @@
         <title>Login page</title>
     </head>
     <body>
+        <h1>Login</h1>
         <div style="color:red">${errorMessage}</div>
         <form action="login" method="POST">
             login : <input name='loginParam'><br>
