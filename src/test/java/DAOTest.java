@@ -13,6 +13,7 @@ import static org.junit.Assert.*;
 import Modele.*;
 import static Modele.DataSourceFactory.getDataSource;
 import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import javax.sql.DataSource;
@@ -101,6 +102,7 @@ public class DAOTest {
         assertEquals(dao.loginClient(nom2, mdp2), false);
     }
     
+    
     @Test
     public void testListeLigne() throws Exception {
         List<Ligne> ligne = new LinkedList<>();
@@ -140,11 +142,6 @@ public class DAOTest {
         assertEquals(prod1.getQuantite(), prod2.getQuantite());
     }
     
-    @Test
-    public void testCalculPrix() throws Exception {
-        double prixTot = 13380.0;
-        assertEquals(prixTot, dao.calculPrix(10273), 0.0);
-    }
     
     @Test
     public void testCreationCom() throws Exception {
@@ -157,4 +154,25 @@ public class DAOTest {
         int expected = 3;
         assertEquals(expected, dao.creationCom(panier));
     }
+    
+    @Test
+    public void testgraphPays() throws SQLException{
+        HashMap<String,Float> res = dao.graphePays(null, null);
+        assertEquals(21,res.size());
+    }
+    
+    @Test
+    public void testgraphCat() throws SQLException{
+        HashMap<String,Float> res = dao.grapheCategorie(null, null);
+        assertEquals(8,res.size());
+    }
+    
+    @Test
+    public void testgraphClient() throws SQLException{
+        HashMap<String,Float> res = dao.grapheClient(null, null);
+        assertEquals(89,res.size());
+    }
+    
+    
+    
 }
